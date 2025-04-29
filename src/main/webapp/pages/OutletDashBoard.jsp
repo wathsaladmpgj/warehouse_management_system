@@ -82,25 +82,29 @@
                 <!-- Compact Vertical Sections -->
                 <div style="width: 50%; float: left;">
                     <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
-                        <h3 class="section-heading">Location Tracking Count</h3>
-                        <%
-                            String adminLocation = (String) session.getAttribute("admin.outletLocation");
-                            int count = DBHelper.getMatchingRecordsCount(adminLocation);
-                        %>
-                        <div class="dynamic-count"><%= count %></div>
+                        <h3 class="section-heading">New Item Available</h3>
+                        <div class="dynamic-count">${trackingCount}</div>
                         <span class="dynamic-count-label">Items matching your location</span>
                     </div>
-                    <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
-                        <h3 class="section-heading">Registered Items</h3>                                                                                  
-                    </div>
-                    <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
-                        <h3 class="section-heading">Available Items</h3>
-                        <p class="section-value">128 items</p>
-                    </div>
-                    <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
-                        <h3 class="section-heading">Success Items</h3>
-                        <p class="section-value">42 items</p>
-                    </div>
+                    
+                        <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
+                            <h3 class="section-heading">Total Registered Items</h3>
+                            <div class="dynamic-count">${totalRegisteredItems}</div>
+                            <span class="dynamic-count-label">Items registered at your outlet</span>
+                        </div>                        
+                        
+                          <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
+                            <h3 class="section-heading">Available Items</h3>
+                            <div class="dynamic-count">${availableItemsCount}</div>
+                            <span class="dynamic-count-label">Items available at your outlet</span>
+                        </div> 
+                            
+                            <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
+                            <h3 class="section-heading">Success Items</h3>
+                            <div class="dynamic-count">${successItemsCount}</div>
+                            <span class="dynamic-count-label">Successfully processed items</span>
+                        </div>
+                            
                 </div>
                 
                 <!-- Price Sections -->
