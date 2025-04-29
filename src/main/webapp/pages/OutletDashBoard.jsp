@@ -4,7 +4,7 @@
 <html>
 <head>
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/sucess.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/OutLetDashBoard.css">
 </head>
 <body>
     <div class="container">

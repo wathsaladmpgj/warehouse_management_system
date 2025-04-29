@@ -21,7 +21,7 @@ public class LoginServlet extends HttpServlet {
         if (admin != null) {
             HttpSession session = request.getSession();
             session.setAttribute("admin", admin);
-            response.sendRedirect(request.getContextPath() + "/pages/sucess.jsp");
+            response.sendRedirect(request.getContextPath() + "/pages/OutletDashBoard.jsp");
         } else {
             request.setAttribute("error", "Invalid credentials!");
             RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
