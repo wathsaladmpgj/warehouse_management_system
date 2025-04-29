@@ -6,6 +6,8 @@ import service.AdminService;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
+import javax.servlet.annotation.WebServlet;
+
 
 public class LoginServlet extends HttpServlet {
     private AdminService adminService = new AdminService();
