@@ -5,6 +5,7 @@
 <html>
 <head>
     <title>Admin Dashboard</title>
+
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/sucess.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
     <style>
@@ -54,6 +55,9 @@
             to { transform: scale(1.05); }
         }
     </style>
+
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/OutLetDashBoard.css">
+
 </head>
 <body>
     <div class="container">
