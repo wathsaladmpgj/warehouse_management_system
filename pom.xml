@@ -31,12 +31,14 @@
         </dependency>
     </dependencies>
     
-     <build>
+    <build>
         <plugins>
+            <!-- Updated Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version> <!-- Updated from 3.1 to 3.8.1 -->
+                <version>3.11.0</version> <!-- Updated to latest stable version -->
+
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -45,18 +47,26 @@
                     </compilerArguments>
                 </configuration>
             </plugin>
+            
+            <!-- Updated Maven War Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.3.2</version> <!-- Updated from 2.3 to 3.3.2 -->
+
+                <version>3.4.0</version> <!-- Updated to latest stable version -->
+
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
+            
+            <!-- Updated Maven Dependency Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.3.0</version> <!-- Updated from 2.6 to 3.3.0 -->
+
+                <version>3.6.0</version> <!-- Updated to latest stable version -->
+
                 <executions>
                     <execution>
                         <phase>validate</phase>
