@@ -17,12 +17,24 @@
     </properties>
     
     <dependencies>
-       <dependency>
+        <!-- Choose either Java EE 7 or Jakarta EE 8, not both -->
+        <!-- Option 1: Java EE 7 -->
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        
+        <!-- OR Option 2: Jakarta EE 8 -->
+        <!--
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-api</artifactId>
+            <version>${jakartaee}</version>
+            <scope>provided</scope>
+        </dependency>
+        -->
         
         <dependency>
             <groupId>mysql</groupId>
@@ -30,15 +42,14 @@
             <version>8.0.29</version>
         </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
-            <!-- Updated Maven Compiler Plugin -->
+            <!-- Maven Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version> <!-- Updated to latest stable version -->
-
+                <version>3.11.0</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -48,25 +59,21 @@
                 </configuration>
             </plugin>
             
-            <!-- Updated Maven War Plugin -->
+            <!-- Maven War Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-
-                <version>3.4.0</version> <!-- Updated to latest stable version -->
-
+                <version>3.4.0</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
                 </configuration>
             </plugin>
             
-            <!-- Updated Maven Dependency Plugin -->
+            <!-- Maven Dependency Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-
-                <version>3.6.0</version> <!-- Updated to latest stable version -->
-
+                <version>3.6.0</version>
                 <executions>
                     <execution>
                         <phase>validate</phase>
