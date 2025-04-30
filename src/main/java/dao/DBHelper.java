@@ -1,37 +1,23 @@
-// src/main/java/com/example/db/DBHelper.java
 package dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class DBHelper {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/warehouse_management";
     private static final String DB_USER = "root";
     private static final String DB_PASS = "";
 
-    public static int getMatchingRecordsCount(String adminLocation) {
-        int count = 0;
+    static {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
-            
-            String sql = "SELECT COUNT(*) AS count FROM location_tracking WHERE tracking_update = ?";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1, adminLocation);
-            
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                count = rs.getInt("count");
-            }
-            
-            rs.close();
-            stmt.close();
-            conn.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Failed to load MySQL JDBC driver", e);
         }
-        return count;
+    }
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASS);
     }
 }

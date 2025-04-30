@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+   
+    <display-name>My Web Application</display-name>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
@@ -20,11 +22,15 @@
         <servlet-name>HeadOffice_Servlet</servlet-name>
         <url-pattern>/HeadOffice_Servlet</url-pattern>
     </servlet-mapping>
+<<<<<<< HEAD
     <servlet-mapping>
         <servlet-name>StaffServlet</servlet-name>
         <url-pattern>/StaffServlet</url-pattern>
     </servlet-mapping>
+=======
+
+>>>>>>> 452882442eb94d8526aa93362a550278ea0837e0
     <welcome-file-list>
-        <welcome-file>pages/login.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 </web-app>
