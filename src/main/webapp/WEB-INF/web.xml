@@ -1,11 +1,20 @@
-<web-app>
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HeadOffice_Servlet</servlet-name>
+        <servlet-class>controller.HeadOffice_Servlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HeadOffice_Servlet</servlet-name>
+        <url-pattern>/HeadOffice_Servlet</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>pages/login.jsp</welcome-file>
