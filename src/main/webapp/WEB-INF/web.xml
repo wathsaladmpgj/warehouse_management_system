@@ -22,14 +22,12 @@
         <servlet-name>HeadOffice_Servlet</servlet-name>
         <url-pattern>/HeadOffice_Servlet</url-pattern>
     </servlet-mapping>
-<<<<<<< HEAD
+
     <servlet-mapping>
         <servlet-name>StaffServlet</servlet-name>
         <url-pattern>/StaffServlet</url-pattern>
     </servlet-mapping>
-=======
 
->>>>>>> 452882442eb94d8526aa93362a550278ea0837e0
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
