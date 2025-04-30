@@ -52,7 +52,7 @@
             <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/home.jsp">Add Outlet</a></div>
             <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/tracking.jsp">View Report</a></div>
             <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/monthly-sales.jsp">Outlet Details</a></div>
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/add-product.jsp">Staff Details</a></div>
+            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/HeadOffice_StaffDetails.jsp">Staff Details</a></div>
         </div>
         <div class="main-content">
             <div class="header">
