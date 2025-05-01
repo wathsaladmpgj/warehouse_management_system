@@ -39,6 +39,9 @@ public class LoginServlet extends HttpServlet {
                 int successItemsCount = adminService.getSuccessItemsCount(adminLocation);
                 session.setAttribute("successItemsCount", successItemsCount);
                 
+                double registeredItemsTotalPrice = adminService.getRegisteredItemsTotalPrice(adminLocation);
+                session.setAttribute("registeredItemsTotalPrice", registeredItemsTotalPrice);
+                
                 // Add to LoginServlet.java
                 double availableItemsTotalPrice = adminService.getAvailableItemsTotalPrice(adminLocation);
                 session.setAttribute("availableItemsTotalPrice", availableItemsTotalPrice);

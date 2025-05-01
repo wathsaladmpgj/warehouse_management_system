@@ -81,15 +81,15 @@ public double getNewItemsTotalPrice(String warehouseLocation) throws SQLExceptio
 
 // Add to AdminDAO.java
 public double getRegisteredItemsTotalPrice(String outletLocation) throws SQLException {
-    String sql = "SELECT SUM(pp.item_price) AS total " +
-                 "FROM product_pricing pp " +
-                 "JOIN admin_register ar ON pp.admin_location = ar.outlet_location " +
-                 "WHERE ar.outlet_location = ? " +
-                 "OR pp.item_prices LIKE 'return%'";
+    String sql = "SELECT COALESCE(SUM(pp.item_price), 0) AS total " +
+                "FROM product_pricing pp " +
+                "JOIN admin_register ar ON pp.admin_location = ar.outlet_location " +
+                "WHERE ar.outlet_location = ? " +
+                "OR pp.item_price LIKE 'return%'"; // Changed item_prices to item_price
     
     try (Connection conn = DBHelper.getConnection();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
-         
+        
         stmt.setString(1, outletLocation);
         ResultSet rs = stmt.executeQuery();
         
