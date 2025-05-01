@@ -365,7 +365,7 @@
                     </a>
                 </div>
                 <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/add-product.jsp">
+                    <a href="${pageContext.request.contextPath}/pages/addProduct.jsp">
                         <i>➕</i> Add Product
                     </a>
                 </div>
