@@ -98,11 +98,15 @@
             <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/home.jsp">Add Outlet</a></div>
             <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/tracking.jsp">View Report</a></div>
             <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/monthly-sales.jsp">Outlet Details</a></div>
+<<<<<<< HEAD
             <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/add-product.jsp">Staff Details</a></div>
 <<<<<<< HEAD
 
 =======
 >>>>>>> 452882442eb94d8526aa93362a550278ea0837e0
+=======
+            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/HeadOffice_StaffDetails.jsp">Staff Details</a></div>
+>>>>>>> 9f15ee2c39902742c284ce51a4b958e90ad83775
         </div>
         <div class="main-content">
             <div class="header">

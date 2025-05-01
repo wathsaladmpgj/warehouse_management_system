@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class HeadOffice_DAO {
-    
+    //HeadOfiice_Dashboard fetch Data
     public int getRowCountTotalRegisteredItems() {
         System.out.println("DEBUG: Starting getRowCountTotalRegisteredItems");
         int count = 0;
@@ -164,6 +164,8 @@ public class HeadOffice_DAO {
         return staffCount;
     }
     
+    
+    //HeadOfiice_StaffDetails fetch Data
     
     
     

@@ -20,6 +20,10 @@
         <servlet-name>HeadOffice_Servlet</servlet-name>
         <servlet-class>controller.HeadOffice_Servlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StaffServlet</servlet-name>
+        <servlet-class>controller.StaffServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -29,7 +33,15 @@
         <url-pattern>/HeadOffice_Servlet</url-pattern>
     </servlet-mapping>
 
+<<<<<<< HEAD
 >>>>>>> 452882442eb94d8526aa93362a550278ea0837e0
+=======
+    <servlet-mapping>
+        <servlet-name>StaffServlet</servlet-name>
+        <url-pattern>/StaffServlet</url-pattern>
+    </servlet-mapping>
+
+>>>>>>> 9f15ee2c39902742c284ce51a4b958e90ad83775
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
