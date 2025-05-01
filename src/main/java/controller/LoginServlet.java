@@ -2,32 +2,52 @@ package controller;
 
 import model.Admin;
 import service.AdminService;
-
 import javax.servlet.*;
 import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
+import java.sql.SQLException;
 
-
+@WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private AdminService adminService = new AdminService();
+    private final AdminService adminService = new AdminService();
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
-        String adminName = request.getParameter("admin_name");
+        String adminName = request.getParameter("username");
         String password = request.getParameter("password");
 
-        Admin admin = adminService.login(adminName, password);
-
-        if (admin != null) {
-            HttpSession session = request.getSession();
-            session.setAttribute("admin", admin);
-            response.sendRedirect(request.getContextPath() + "/pages/OutletDashBoard.jsp");
-        } else {
-            request.setAttribute("error", "Invalid credentials!");
-            RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
-            rd.forward(request, response);
+        try {
+            String adminLocation = adminService.getAdminLocation(adminName);
+            
+            if (adminLocation != null) {
+                HttpSession session = request.getSession();
+                Admin admin = new Admin(adminName, adminLocation);
+                session.setAttribute("admin", admin);
+                
+                int trackingCount = adminService.getMatchingTrackingCount(adminLocation);
+                session.setAttribute("trackingCount", trackingCount);
+                
+                int totalRegisteredItems = adminService.getTotalRegisteredItems(adminLocation);
+                session.setAttribute("totalRegisteredItems", totalRegisteredItems);
+                
+                int availableItemsCount = adminService.getAvailableItemsCount(adminLocation);
+                session.setAttribute("availableItemsCount", availableItemsCount);
+                
+                // NEW: Add success items count to session
+                int successItemsCount = adminService.getSuccessItemsCount(adminLocation);
+                session.setAttribute("successItemsCount", successItemsCount);
+                
+                response.sendRedirect("pages/OutletDashBoard.jsp");
+            } else {
+                request.setAttribute("error", "Invalid credentials");
+                request.getRequestDispatcher("/pages/login.jsp").forward(request, response);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Database error. Please try again.");
+            request.getRequestDispatcher("/pages/login.jsp").forward(request, response);
         }
     }
 }

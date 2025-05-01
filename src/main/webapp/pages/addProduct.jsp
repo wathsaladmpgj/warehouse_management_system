@@ -9,45 +9,115 @@
         .product-form {
             max-width: 600px;
             margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+            padding: 30px;
+            border-radius: 15px;
+            background: linear-gradient(145deg, #ffffff, #f0f0f0);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease-out;
         }
+        
+        .product-form:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 25px;
+            position: relative;
         }
+        
         .form-group label {
             display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+            transition: all 0.3s ease;
         }
+        
         .form-group input, .form-group select {
             width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
             box-sizing: border-box;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background-color: #f9f9f9;
         }
+        
+        .form-group input:focus, .form-group select:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+            outline: none;
+            background-color: #fff;
+        }
+        
+        .form-group input:hover, .form-group select:hover {
+            border-color: #bdbdbd;
+        }
+        
         .form-submit {
-            background-color: #4CAF50;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
             color: white;
-            padding: 10px 15px;
+            padding: 14px 20px;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+        
         .form-submit:hover {
-            background-color: #45a049;
+            background: linear-gradient(135deg, #45a049, #3d8b40);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
+        
+        .form-submit:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
         .error {
-            color: red;
+            color: #e74c3c;
             font-size: 14px;
+            padding: 10px;
+            background-color: #fdecea;
+            border-radius: 6px;
+            margin-top: 15px;
+            animation: shake 0.5s ease;
         }
+        
         .success {
-            color: green;
+            color: #27ae60;
             font-size: 14px;
+            padding: 10px;
+            background-color: #e8f5e9;
+            border-radius: 6px;
+            margin-top: 15px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
+        }
+        
+        .form-group input:focus + label,
+        .form-group input:not(:placeholder-shown) + label {
+            transform: translateY(-25px);
+            font-size: 14px;
+            color: #4CAF50;
         }
     </style>
 </head>
@@ -70,27 +140,27 @@
                     
                     <div class="form-group">
                         <label for="senderName">Sender Name:</label>
-                        <input type="text" id="senderName" name="senderName" required>
+                        <input type="text" id="senderName" name="senderName" required placeholder=" ">
                     </div>
                     
                     <div class="form-group">
                         <label for="receiverName">Receiver Name:</label>
-                        <input type="text" id="receiverName" name="receiverName" required>
+                        <input type="text" id="receiverName" name="receiverName" required placeholder=" ">
                     </div>
                     
                     <div class="form-group">
                         <label for="postalCode">Postal Code:</label>
-                        <input type="text" id="postalCode" name="postalCode" required>
+                        <input type="text" id="postalCode" name="postalCode" required placeholder=" ">
                     </div>
                     
                     <div class="form-group">
                         <label for="receiveLocation">Receive Location (Address):</label>
-                        <input type="text" id="receiverLocation" name="receiverLocation" required>
+                        <input type="text" id="receiverLocation" name="receiverLocation" required placeholder=" ">
                     </div>
                     
                     <div class="form-group">
                         <label for="productWeight">Product Weight (kg):</label>
-                        <input type="number" id="productWeight" name="productWeight" step="0.01" min="0.01" required>
+                        <input type="number" id="productWeight" name="productWeight" step="0.01" min="0.01" required placeholder=" ">
                     </div>
                     
                     <div class="form-group">

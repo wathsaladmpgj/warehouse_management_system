@@ -62,14 +62,11 @@
 <body>
     <div class="container">
         <div class="sidebar">
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/home.jsp">Home page</a></div>
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/tracking.jsp">Tracking page</a></div>
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/monthly-sales.jsp">Monthly Sales Report</a></div>
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/add-product.jsp">Add Product</a></div>
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/product-details.jsp">Product Details</a></div>
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/item-details.jsp">Inventory Details</a></div>
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/add-staff.jsp">Add Staff</a></div>
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/staff-management.jsp">Staff Management</a></div>
+            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/home.jsp">Add Outlet</a></div>
+            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/tracking.jsp">View Report</a></div>
+            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/monthly-sales.jsp">Outlet Details</a></div>
+            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/add-product.jsp">Staff Details</a></div>
+
         </div>
         <div class="main-content">
             <div class="header">
@@ -82,29 +79,25 @@
                 <!-- Compact Vertical Sections -->
                 <div style="width: 50%; float: left;">
                     <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
-                        <h3 class="section-heading">New Item Available</h3>
-                        <div class="dynamic-count">${trackingCount}</div>
+                        <h3 class="section-heading">All items</h3>
+                        <%
+                            String adminLocation = (String) session.getAttribute("admin.outletLocation");
+                            int count = DBHelper.getMatchingRecordsCount(adminLocation);
+                        %>
+                        <div class="dynamic-count"><%= count %></div>
                         <span class="dynamic-count-label">Items matching your location</span>
                     </div>
-                    
-                        <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
-                            <h3 class="section-heading">Total Registered Items</h3>
-                            <div class="dynamic-count">${totalRegisteredItems}</div>
-                            <span class="dynamic-count-label">Items registered at your outlet</span>
-                        </div>                        
-                        
-                          <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
-                            <h3 class="section-heading">Available Items</h3>
-                            <div class="dynamic-count">${availableItemsCount}</div>
-                            <span class="dynamic-count-label">Items available at your outlet</span>
-                        </div> 
-                            
-                            <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
-                            <h3 class="section-heading">Success Items</h3>
-                            <div class="dynamic-count">${successItemsCount}</div>
-                            <span class="dynamic-count-label">Successfully processed items</span>
-                        </div>
-                            
+                    <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
+                        <h3 class="section-heading">All items price</h3>                                                                                  
+                    </div>
+                    <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
+                        <h3 class="section-heading">Returned Items</h3>
+                        <p class="section-value">128 items</p>
+                    </div>
+                    <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
+                        <h3 class="section-heading">Success items</h3>
+                        <p class="section-value">42 items</p>
+                    </div>
                 </div>
                 
                 <!-- Price Sections -->
