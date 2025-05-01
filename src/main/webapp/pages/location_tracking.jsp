@@ -8,11 +8,15 @@
 <body>
     <h2>Location Tracking</h2>
     <form action="<%=request.getContextPath()%>/LocationTrackingServlet" method="post">
-        <input type="text" name="inputValue" placeholder="Enter Tracking Number or ID" required />
-        <input type="radio" name="mode" value="ReturnShip" checked /> ReturnShip
-        <input type="radio" name="mode" value="ReturnUser" checked/> ReturnUser
-        <button type="submit" name="action" value="add">Add</button>
-    </form>
+    <input type="text" name="inputValue" placeholder="Enter Tracking Number or ID" required />
+
+    <input type="radio" name="mode" value="ReturnShip" <%= "ReturnShip".equals(request.getAttribute("mode")) ? "checked" : "" %> /> ReturnShip
+    <input type="radio" name="mode" value="ReturnUser" <%= "ReturnUser".equals(request.getAttribute("mode")) ? "checked" : "" %> /> ReturnUser
+    <input type="radio" name="mode" value="Success" <%= "Success".equals(request.getAttribute("mode")) ? "checked" : "" %> /> Success
+
+    <button type="submit" name="action" value="add">Add</button>
+</form>
+
     <br/>
 
     <%
