@@ -7,10 +7,10 @@
 </head>
 <body>
     <h2>Location Tracking</h2>
-    <form method="post" action="pages/LocationTrackingServlet">
+    <form action="<%=request.getContextPath()%>/LocationTrackingServlet" method="post">
         <input type="text" name="inputValue" placeholder="Enter Tracking Number or ID" required />
         <input type="radio" name="mode" value="ReturnShip" checked /> ReturnShip
-        <input type="radio" name="mode" value="ReturnUser" /> ReturnUser
+        <input type="radio" name="mode" value="ReturnUser" checked/> ReturnUser
         <button type="submit" name="action" value="add">Add</button>
     </form>
     <br/>
@@ -21,7 +21,7 @@
         String mode = (String) request.getAttribute("mode");
         if (results != null && !results.isEmpty()) {
     %>
-        <form method="post" action="pages/LocationTrackingServlet">
+        <form action="<%=request.getContextPath()%>/LocationTrackingServlet" method="post">
             <input type="hidden" name="mode" value="<%=mode%>"/>
             <input type="hidden" name="inputValue" value="<%=request.getAttribute("inputValue")%>"/>
             <table border="1">
