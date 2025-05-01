@@ -9,10 +9,12 @@ import javax.servlet.http.*;
 
 @WebServlet("/LocationTrackingServlet")
 public class LocationTrackingServlet extends HttpServlet {
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/your_db_name";
-    private static final String DB_USER = "your_username";
-    private static final String DB_PASS = "your_password";
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/warehouse_management";
+    private static final String DB_USER = "root";
+    private static final String DB_PASS = "";
 
+    
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -27,7 +29,7 @@ public class LocationTrackingServlet extends HttpServlet {
                 if ("ReturnShip".equals(mode)) {
                     sql = "SELECT * FROM location_tracking WHERE product_key = ?";
                 } else if ("ReturnUser".equals(mode)) {
-                    sql = "SELECT * FROM location_tracking WHERE id = ?";
+                    sql = "SELECT * FROM location_tracking WHERE product_key = ?";
                 }
                 try (PreparedStatement ps = conn.prepareStatement(sql)) {
                     ps.setString(1, inputValue);
@@ -76,7 +78,7 @@ public class LocationTrackingServlet extends HttpServlet {
             request.setAttribute("message", message);
         }
 
-        RequestDispatcher rd = request.getRequestDispatcher("location_tracking.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("pages/updateTracking.jsp");
         rd.forward(request, response);
     }
 }
