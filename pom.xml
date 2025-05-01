@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.mycompany</groupId>
-    <artifactId>mavenproject1</artifactId>
+    <artifactId>warehouse_management_system</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
-    <name>mavenproject1-1.0-SNAPSHOT</name>
+    <name>Warehouse Management System</name>
     
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -17,7 +17,7 @@
     </properties>
     
     <dependencies>
-        <!-- Servlet API (Tomcat 9 provides Java EE 8 with javax.*) -->
+        <!-- Servlet API -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -33,7 +33,7 @@
             <scope>provided</scope>
         </dependency>
         
-        <!-- JSTL 1.2 (using javax.* namespace) -->
+        <!-- JSTL -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
@@ -45,13 +45,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.29</version>
-        </dependency>
-        
-        <!-- Additional support for JSTL functions -->
-        <dependency>
-            <groupId>taglibs</groupId>
-            <artifactId>standard</artifactId>
-            <version>1.1.2</version>
         </dependency>
     </dependencies>
 
@@ -65,9 +58,6 @@
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
-                    <compilerArgs>
-                        <arg>-Xlint:unchecked</arg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
             
@@ -78,26 +68,7 @@
                 <version>3.4.0</version>
                 <configuration>
                     <failOnMissingWebXml>${failOnMissingWebXml}</failOnMissingWebXml>
-                    <warSourceDirectory>src/main/webapp</warSourceDirectory>
-                    <webResources>
-                        <resource>
-                            <directory>src/main/webapp</directory>
-                            <includes>
-                                <include>**/*.jsp</include>
-                                <include>**/*.html</include>
-                                <include>**/*.css</include>
-                                <include>**/*.js</include>
-                            </includes>
-                        </resource>
-                    </webResources>
                 </configuration>
-            </plugin>
-            
-            <!-- Maven Clean Plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>3.3.2</version>
             </plugin>
         </plugins>
     </build>
