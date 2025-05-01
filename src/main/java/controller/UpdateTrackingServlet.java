@@ -13,10 +13,13 @@ public class UpdateTrackingServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String adminLocation = request.getParameter("adminLocation");
+        String fromLocationForm = request.getParameter("fromLocation").trim();
+        String toLocationForm = request.getParameter("toLocation").trim();
+        String trackingDateForm = request.getParameter("trackingDate").trim();
 
-        String dbURL = "jdbc:mysql://localhost:3306/warehouse_management"; // ✅ Your DB
-        String dbUser = "root";                                            // ✅ DB username
-        String dbPass = "";                                                // ✅ DB password
+        String dbURL = "jdbc:mysql://localhost:3306/warehouse_management";
+        String dbUser = "root";
+        String dbPass = "";
 
         String message = "";
 
@@ -24,10 +27,15 @@ public class UpdateTrackingServlet extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPass);
 
-            // Select all records from the table
-            String selectQuery = "SELECT id, from_location, to_location, tracking_update FROM location_tracking";
-            Statement selectStmt = conn.createStatement();
-            ResultSet rs = selectStmt.executeQuery(selectQuery);
+            // Filtered select query based on form input
+            String selectQuery = "SELECT id, from_location, to_location, tracking_update FROM location_tracking " +
+                                 "WHERE from_location = ? AND to_location = ? AND tracking_date = ?";
+            PreparedStatement selectStmt = conn.prepareStatement(selectQuery);
+            selectStmt.setString(1, fromLocationForm);
+            selectStmt.setString(2, toLocationForm);
+            selectStmt.setString(3, trackingDateForm);
+
+            ResultSet rs = selectStmt.executeQuery();
 
             int totalUpdated = 0;
 
@@ -38,18 +46,16 @@ public class UpdateTrackingServlet extends HttpServlet {
                 String trackingUpdate = rs.getString("tracking_update").trim();
                 String newTrackingUpdate = null;
 
-                // Rule 1: from_location == adminLocation AND tracking_update == adminLocation → "ship"
+                // Rule 1
                 if (fromLocation.equalsIgnoreCase(adminLocation) && trackingUpdate.equalsIgnoreCase(adminLocation)) {
                     newTrackingUpdate = "ship";
                 }
-
-                // Rule 2: to_location == adminLocation AND tracking_update == "ship" → adminLocation
+                // Rule 2
                 else if (toLocation.equalsIgnoreCase(adminLocation) && trackingUpdate.equalsIgnoreCase("ship")) {
                     newTrackingUpdate = adminLocation;
                 }
-
-                // Rule 3: to_location == adminLocation AND tracking_update == "Return_shipped" → "Return" + adminLocation
-                else if (toLocation.equalsIgnoreCase(adminLocation) && trackingUpdate.equalsIgnoreCase("Return_shipped")) {
+                // Rule 3
+                else if (toLocation.equalsIgnoreCase(adminLocation) && trackingUpdate.equalsIgnoreCase("Return_shiped")) {
                     newTrackingUpdate = "Return" + adminLocation;
                 }
 

@@ -13,7 +13,6 @@ public class LocationTrackingServlet extends HttpServlet {
     private static final String DB_USER = "root";
     private static final String DB_PASS = "";
 
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -25,12 +24,7 @@ public class LocationTrackingServlet extends HttpServlet {
         if ("add".equals(action)) {
             List<Map<String, Object>> results = new ArrayList<>();
             try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS)) {
-                String sql = "";
-                if ("ReturnShip".equals(mode)) {
-                    sql = "SELECT * FROM location_tracking WHERE product_key = ?";
-                } else if ("ReturnUser".equals(mode)) {
-                    sql = "SELECT * FROM location_tracking WHERE product_key = ?";
-                }
+                String sql = "SELECT * FROM location_tracking WHERE product_key = ?";
                 try (PreparedStatement ps = conn.prepareStatement(sql)) {
                     ps.setString(1, inputValue);
                     try (ResultSet rs = ps.executeQuery()) {
@@ -49,32 +43,70 @@ public class LocationTrackingServlet extends HttpServlet {
             } catch (SQLException e) {
                 throw new ServletException(e);
             }
+
             request.setAttribute("results", results);
             request.setAttribute("mode", mode);
             request.setAttribute("inputValue", inputValue);
-        } else if ("update".equals(action)) {
+        }
+
+        else if ("update".equals(action)) {
             String selectedId = request.getParameter("selectedId");
             String updateValue = "";
+
             if ("ReturnShip".equals(mode)) {
                 updateValue = "Return_shiped";
+
+                try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS)) {
+                    // Fetch current from/to
+                    String query = "SELECT from_location, to_location FROM location_tracking WHERE id=?";
+                    String fromLocation = "";
+                    String toLocation = "";
+
+                    try (PreparedStatement ps = conn.prepareStatement(query)) {
+                        ps.setInt(1, Integer.parseInt(selectedId));
+                        try (ResultSet rs = ps.executeQuery()) {
+                            if (rs.next()) {
+                                fromLocation = rs.getString("from_location");
+                                toLocation = rs.getString("to_location");
+                            }
+                        }
+                    }
+
+                    // Swap locations + update tracking
+                    String updateSQL = "UPDATE location_tracking SET tracking_update=?, from_location=?, to_location=? WHERE id=?";
+                    try (PreparedStatement ps = conn.prepareStatement(updateSQL)) {
+                        ps.setString(1, updateValue);
+                        ps.setString(2, toLocation); // Swapped
+                        ps.setString(3, fromLocation);
+                        ps.setInt(4, Integer.parseInt(selectedId));
+                        int rows = ps.executeUpdate();
+                        message = (rows > 0) ? "Tracking updated with location swap!" : "Update failed!";
+                    }
+                } catch (SQLException e) {
+                    throw new ServletException(e);
+                }
+
             } else if ("ReturnUser".equals(mode)) {
                 updateValue = "ReturnUser";
+            } else if ("Success".equals(mode)) {
+                updateValue = "Success";
             }
-            try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS)) {
-                String sql = "UPDATE location_tracking SET tracking_update=? WHERE id=?";
-                try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                    ps.setString(1, updateValue);
-                    ps.setInt(2, Integer.parseInt(selectedId));
-                    int rows = ps.executeUpdate();
-                    if (rows > 0) {
-                        message = "Tracking update successful!";
-                    } else {
-                        message = "Update failed!";
+
+            // Simple update if not ReturnShip
+            if (!"ReturnShip".equals(mode)) {
+                try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASS)) {
+                    String sql = "UPDATE location_tracking SET tracking_update=? WHERE id=?";
+                    try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                        ps.setString(1, updateValue);
+                        ps.setInt(2, Integer.parseInt(selectedId));
+                        int rows = ps.executeUpdate();
+                        message = (rows > 0) ? "Tracking update successful!" : "Update failed!";
                     }
+                } catch (SQLException e) {
+                    throw new ServletException(e);
                 }
-            } catch (SQLException e) {
-                throw new ServletException(e);
             }
+
             request.setAttribute("message", message);
         }
 
