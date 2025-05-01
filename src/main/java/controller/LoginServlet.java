@@ -39,6 +39,13 @@ public class LoginServlet extends HttpServlet {
                 int successItemsCount = adminService.getSuccessItemsCount(adminLocation);
                 session.setAttribute("successItemsCount", successItemsCount);
                 
+                // Add to LoginServlet.java
+                double availableItemsTotalPrice = adminService.getAvailableItemsTotalPrice(adminLocation);
+                session.setAttribute("availableItemsTotalPrice", availableItemsTotalPrice);
+
+                double successItemsTotalPrice = adminService.getSuccessItemsTotalPrice(adminLocation);
+                session.setAttribute("successItemsTotalPrice", successItemsTotalPrice);
+                
                 response.sendRedirect("pages/OutletDashBoard.jsp");
             } else {
                 request.setAttribute("error", "Invalid credentials");
