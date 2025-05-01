@@ -3,13 +3,34 @@
 <html>
 <head>
     <title>Admin Login</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #004494, #0066cc);
+        :root {
+            --primary: #1a237e;
+            --primary-light: #303f9f;
+            --primary-dark: #0d1452;
+            --secondary: #1976d2;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --dark: #121212;
+            --light: #e3f2fd;
+            --gray: #90a4ae;
+            --gray-light: #cfd8dc;
+            --white: #ffffff;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-dark);
+            color: var(--gray-light);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,33 +39,17 @@
         }
         
         .login-container {
-            background-color: white;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            background: var(--dark);
+            padding: 2.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             width: 380px;
             position: relative;
             z-index: 1;
             transform: translateY(20px);
             opacity: 0;
-            transition: all 0.6s ease-out;
-            overflow: hidden;
-        }
-        
-        .login-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom right,
-                rgba(255, 255, 255, 0.1) 0%,
-                rgba(255, 255, 255, 0) 60%
-            );
-            transform: rotate(30deg);
-            z-index: -1;
+            transition: var(--transition);
+            border: 1px solid var(--primary-light);
         }
         
         .login-container.visible {
@@ -53,31 +58,31 @@
         }
         
         h2 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
-            color: #004494;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            color: var(--light);
             text-align: center;
-            margin-bottom: 30px;
-            font-size: 28px;
+            margin-bottom: 2rem;
+            font-size: 1.75rem;
             position: relative;
         }
         
         h2::after {
             content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -0.75rem;
             left: 50%;
             transform: translateX(-50%);
             width: 50px;
             height: 3px;
-            background: #004494;
+            background: var(--secondary);
             border-radius: 3px;
         }
         
         form {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 1.5rem;
         }
         
         .input-group {
@@ -85,63 +90,64 @@
         }
         
         input {
-            padding: 14px 15px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-family: 'Roboto', sans-serif;
-            font-size: 15px;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--primary-light);
+            border-radius: 0.375rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9375rem;
             width: 100%;
             box-sizing: border-box;
-            transition: all 0.3s;
-            background-color: #f9f9f9;
+            transition: var(--transition);
+            background-color: var(--primary-dark);
+            color: var(--gray-light);
         }
         
         input:focus {
             outline: none;
-            border-color: #004494;
-            box-shadow: 0 0 0 3px rgba(0, 68, 148, 0.2);
-            background-color: white;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.3);
+            background-color: var(--primary);
         }
         
         .floating-label {
             position: absolute;
-            left: 15px;
-            top: 14px;
-            color: #999;
-            font-size: 15px;
+            left: 1rem;
+            top: 0.875rem;
+            color: var(--gray);
+            font-size: 0.9375rem;
             pointer-events: none;
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         
         input:focus + .floating-label,
         input:not(:placeholder-shown) + .floating-label {
-            top: -10px;
-            left: 10px;
-            font-size: 12px;
-            background-color: white;
-            padding: 0 5px;
-            color: #004494;
+            top: -0.625rem;
+            left: 0.625rem;
+            font-size: 0.75rem;
+            background-color: var(--primary-dark);
+            padding: 0 0.3125rem;
+            color: var(--secondary);
         }
         
         button {
-            background: linear-gradient(to right, #004494, #0066cc);
-            color: white;
+            background: linear-gradient(to right, var(--primary), var(--primary-light));
+            color: var(--white);
             border: none;
-            padding: 14px;
-            border-radius: 8px;
-            font-family: 'Montserrat', sans-serif;
+            padding: 0.875rem;
+            border-radius: 0.375rem;
+            font-family: 'Inter', sans-serif;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
+            transition: var(--transition);
+            margin-top: 0.5rem;
             position: relative;
             overflow: hidden;
         }
         
         button:hover {
-            background: linear-gradient(to right, #003366, #004494);
-            box-shadow: 0 5px 15px rgba(0, 68, 148, 0.4);
+            background: linear-gradient(to right, var(--primary-light), var(--primary));
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             transform: translateY(-2px);
         }
         
@@ -156,9 +162,9 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.1);
             transform: rotate(30deg) translate(-20px, -40px);
-            transition: all 0.3s;
+            transition: var(--transition);
         }
         
         button:hover::after {
@@ -166,14 +172,14 @@
         }
         
         .error-message {
-            color: #d32f2f;
-            font-family: 'Roboto', sans-serif;
+            color: var(--danger);
+            font-family: 'Inter', sans-serif;
             text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: rgba(211, 47, 47, 0.1);
+            margin-top: 1.25rem;
+            font-size: 0.875rem;
+            padding: 0.625rem;
+            border-radius: 0.25rem;
+            background-color: rgba(244, 67, 54, 0.1);
             animation: shake 0.5s ease-in-out;
         }
         
@@ -184,7 +190,7 @@
         }
         
         /* Background animation elements */
-        .bg-bubbles {
+        .bg-shapes {
             position: absolute;
             top: 0;
             left: 0;
@@ -194,70 +200,70 @@
             overflow: hidden;
         }
         
-        .bg-bubbles li {
+        .bg-shapes li {
             position: absolute;
             list-style: none;
             display: block;
             width: 40px;
             height: 40px;
-            background-color: rgba(255, 255, 255, 0.15);
+            background-color: rgba(25, 118, 210, 0.1);
             bottom: -160px;
             animation: square 20s infinite;
             transition-timing-function: linear;
             border-radius: 5px;
         }
         
-        .bg-bubbles li:nth-child(1) {
+        .bg-shapes li:nth-child(1) {
             left: 10%;
             animation-delay: 0s;
             animation-duration: 16s;
         }
         
-        .bg-bubbles li:nth-child(2) {
+        .bg-shapes li:nth-child(2) {
             left: 20%;
             animation-delay: 2s;
             animation-duration: 14s;
         }
         
-        .bg-bubbles li:nth-child(3) {
+        .bg-shapes li:nth-child(3) {
             left: 25%;
             animation-delay: 4s;
         }
         
-        .bg-bubbles li:nth-child(4) {
+        .bg-shapes li:nth-child(4) {
             left: 40%;
             animation-delay: 6s;
             animation-duration: 18s;
         }
         
-        .bg-bubbles li:nth-child(5) {
+        .bg-shapes li:nth-child(5) {
             left: 70%;
             animation-delay: 0s;
         }
         
-        .bg-bubbles li:nth-child(6) {
+        .bg-shapes li:nth-child(6) {
             left: 80%;
             animation-delay: 3s;
             animation-duration: 17s;
         }
         
-        .bg-bubbles li:nth-child(7) {
+        .bg-shapes li:nth-child(7) {
             left: 30%;
             animation-delay: 7s;
         }
         
-        .bg-bubbles li:nth-child(8) {
+        .bg-shapes li:nth-child(8) {
             left: 50%;
             animation-delay: 1s;
             animation-duration: 15s;
         }
         
-        .bg-bubbles li:nth-child(9) {
+        .bg-shapes li:nth-child(9) {
             left: 65%;
             animation-delay: 5s;
         }
         
-        .bg-bubbles li:nth-child(10) {
+        .bg-shapes li:nth-child(10) {
             left: 90%;
             animation-delay: 2s;
             animation-duration: 12s;
@@ -277,7 +283,7 @@
 </head>
 <body>
     <!-- Animated background elements -->
-    <ul class="bg-bubbles">
+    <ul class="bg-shapes">
         <li></li>
         <li></li>
         <li></li>
@@ -324,12 +330,12 @@
             const inputs = document.querySelectorAll('input');
             inputs.forEach(input => {
                 input.addEventListener('focus', function() {
-                    this.parentNode.querySelector('.floating-label').style.color = '#004494';
+                    this.parentNode.querySelector('.floating-label').style.color = 'var(--secondary)';
                 });
                 
                 input.addEventListener('blur', function() {
                     if (!this.value) {
-                        this.parentNode.querySelector('.floating-label').style.color = '#999';
+                        this.parentNode.querySelector('.floating-label').style.color = 'var(--gray)';
                     }
                 });
             });
@@ -337,7 +343,7 @@
             // Animate button on hover
             const loginButton = document.getElementById('loginButton');
             loginButton.addEventListener('mouseenter', function() {
-                this.style.boxShadow = '0 5px 15px rgba(0, 68, 148, 0.4)';
+                this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.3)';
             });
             
             loginButton.addEventListener('mouseleave', function() {
@@ -380,7 +386,7 @@
             .ripple-effect {
                 position: absolute;
                 border-radius: 50%;
-                background: rgba(255, 255, 255, 0.7);
+                background: rgba(255, 255, 255, 0.3);
                 transform: scale(0);
                 animation: ripple 0.6s linear;
                 pointer-events: none;
