@@ -4,7 +4,7 @@ import dao.AdminDAO;
 import java.sql.SQLException;
 
 public class AdminService {
-    private final AdminDAO adminDao;
+    private final AdminDAO adminDao;  // Field name is 'adminDao' (lowercase 'D')
 
     public AdminService() {
         this.adminDao = new AdminDAO();
@@ -30,4 +30,26 @@ public class AdminService {
     public int getSuccessItemsCount(String outletName) throws SQLException {
         return adminDao.getSuccessItemsCount(outletName);
     }
+    
+   // Add these methods to your existing AdminService class
+
+
+     public double getNewItemsTotalPrice(String outletLocation) throws SQLException {
+        return adminDao.getNewItemsTotalPrice(outletLocation);
+    }
+     
+     // Add to AdminService.java
+public double getRegisteredItemsTotalPrice(String outletLocation) throws SQLException {
+    return adminDao.getRegisteredItemsTotalPrice(outletLocation);
+}
+
+// Add to AdminService.java
+public double getAvailableItemsTotalPrice(String outletLocation) throws SQLException {
+    return adminDao.getAvailableItemsTotalPrice(outletLocation);
+}
+
+public double getSuccessItemsTotalPrice(String outletLocation) throws SQLException {
+    return adminDao.getSuccessItemsTotalPrice(outletLocation);
+}
+
 }
