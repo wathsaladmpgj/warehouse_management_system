@@ -40,33 +40,6 @@
             from { transform: scale(1); }
             to { transform: scale(1.05); }
         }
-
-        /* NEW: Logout button styles */
-        .logout-btn {
-            display: inline-block;
-            padding: 10px 25px;
-            background-color: #e74c3c;
-            color: white;
-            text-decoration: none;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            border-radius: 5px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            border: none;
-            cursor: pointer;
-        }
-
-        .logout-btn:hover {
-            background-color: #c0392b;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .logout-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
     </style>
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/OutLetDashBoard.css">
 </head>
@@ -78,16 +51,12 @@
         <div class="sidebar">
             <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/home.jsp">Add Outlet</a></div>
             <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/tracking.jsp">View Report</a></div>
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/monthly-sales.jsp">Outlet Details</a></div>
-
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/add-product.jsp">Staff Details</a></div>
-
+            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/HeadOffice_OutletDetails.jsp">Outlet Details</a></div>
             <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/HeadOffice_StaffDetails.jsp">Staff Details</a></div>
-
         </div>
         <div class="main-content">
             <div class="header">
-                <h2>${sessionScope.admin.outletLocation}</h2>
+                <h2>Head Office</h2>
             </div>
             <div class="content-area">
                 
@@ -102,30 +71,14 @@
                     </div>
                     
                     <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
-
-                        <h3 class="section-heading">All items price</h3>
-                        <div class="dynamic-count">$0.00</div>
-
                         <h3 class="section-heading">Total Returned Items</h3>
                         <p class="section-value">${getTotalReturnedItems}</p>
-
                     </div>
                     
 
                     <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
-
-                        <h3 class="section-heading">Returned Items</h3>
-                        <div class="dynamic-count">128</div>
-                        <span class="dynamic-count-label">Returned items</span>
-                    </div>
-                    <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
-                        <h3 class="section-heading">Success items</h3>
-                        <div class="dynamic-count">42</div>
-                        <span class="dynamic-count-label">Successful items</span>
-
                         <h3 class="section-heading">Remaining Returned Items</h3>
                         <p class="section-value">${remaining_returned_items}</p>
-
                     </div>
                     
                 </div>
@@ -133,22 +86,6 @@
                 <div style="width: 45%; float: right;">
                     
                     <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
-
-                        <h3 class="section-heading">All item total price</h3>
-                        <div class="dynamic-count">$0.00</div>
-                    </div>
-                    <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
-                        <h3 class="section-heading">Registered item total price</h3>
-                        <div class="dynamic-count">$0.00</div>
-                    </div>
-                    <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
-                        <h3 class="section-heading">Available item total price</h3>
-                        <div class="dynamic-count">$0.00</div>
-                    </div>
-                    <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
-                        <h3 class="section-heading">Success item total price</h3>
-                        <div class="dynamic-count">$0.00</div>
-
                         <h3 class="section-heading">Available New Items</h3>
                         <p class="section-value">${available_new_items}</p>
                     </div>
@@ -160,7 +97,6 @@
                      <div style="background-color: #004494; padding: 20px; margin-bottom: 15px; border-radius: 10px; min-height: 100px;">
                         <h3 class="section-heading">Outlet Count</h3>
                         <p class="section-value">${getOutletCount}</p>
-
                     </div>
                     
                     
@@ -169,14 +105,8 @@
                     
                     
                 <div style="clear: both;"></div>
-
-                
-                <div style="margin-top: 20px; text-align: center;">
-                    <a href="${pageContext.request.contextPath}/pages/login.jsp" class="logout-btn">Logout</a>
-
                 <div style="margin-top: 20px;">
                     <a href="${pageContext.request.contextPath}/pages/login.jsp">Logout</a>
-
                 </div>
                 
             </div>
