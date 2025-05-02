@@ -58,4 +58,78 @@ public class AdminDAO {
             return rs.next() ? rs.getInt("success_count") : 0;
         }
     }
+    
+    
+    // Add these methods to your existing AdminDAO class
+
+
+public double getNewItemsTotalPrice(String warehouseLocation) throws SQLException {
+    String sql = "SELECT SUM(pp.item_price) AS total " +
+                 "FROM product_pricing pp " +
+                 "JOIN location_tracking lt ON pp.product_key = lt.product_key " +
+                 "WHERE lt.tracking_update = ?";
+    
+    try (Connection conn = DBHelper.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+         
+        stmt.setString(1, warehouseLocation);
+        ResultSet rs = stmt.executeQuery();
+        
+        return rs.next() ? rs.getDouble("total") : 0.0;
+    }
+}
+
+// Add to AdminDAO.java
+public double getRegisteredItemsTotalPrice(String outletLocation) throws SQLException {
+    String sql = "SELECT COALESCE(SUM(pp.item_price), 0) AS total " +
+                "FROM product_pricing pp " +
+                "JOIN admin_register ar ON pp.admin_location = ar.outlet_location " +
+                "WHERE ar.outlet_location = ? " +
+                "OR pp.item_price LIKE 'return%'"; // Changed item_prices to item_price
+    
+    try (Connection conn = DBHelper.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        
+        stmt.setString(1, outletLocation);
+        ResultSet rs = stmt.executeQuery();
+        
+        return rs.next() ? rs.getDouble("total") : 0.0;
+    }
+}
+
+// Add to AdminDAO.java
+public double getAvailableItemsTotalPrice(String outletLocation) throws SQLException {
+    String sql = "SELECT SUM(pp.item_price) AS total " +
+                 "FROM product_pricing pp " +
+                 "JOIN outlet_details od ON pp.admin_location = od.outlet_name " +
+                 "WHERE od.outlet_name LIKE ? " +
+                 "AND (od.remaining_returned_items > 0 OR od.available_new_items > 0)";
+    
+    try (Connection conn = DBHelper.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+         
+        stmt.setString(1, "%" + outletLocation + "%");
+        ResultSet rs = stmt.executeQuery();
+        
+        return rs.next() ? rs.getDouble("total") : 0.0;
+    }
+}
+
+public double getSuccessItemsTotalPrice(String outletLocation) throws SQLException {
+    String sql = "SELECT SUM(pp.item_price) AS total " +
+                 "FROM product_pricing pp " +
+                 "JOIN outlet_details od ON pp.admin_location = od.outlet_name " +
+                 "WHERE od.outlet_name = ? " +
+                 "AND od.total_registered_items > (od.remaining_returned_items + od.available_new_items)";
+    
+    try (Connection conn = DBHelper.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+         
+        stmt.setString(1, outletLocation);
+        ResultSet rs = stmt.executeQuery();
+        
+        return rs.next() ? rs.getDouble("total") : 0.0;
+    }
+}
+    
 }

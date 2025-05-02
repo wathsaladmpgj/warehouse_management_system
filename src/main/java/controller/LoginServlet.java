@@ -6,6 +6,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import javax.servlet.annotation.WebServlet;
 import java.sql.SQLException;
 
 @WebServlet("/login")
@@ -37,6 +38,16 @@ public class LoginServlet extends HttpServlet {
                 // NEW: Add success items count to session
                 int successItemsCount = adminService.getSuccessItemsCount(adminLocation);
                 session.setAttribute("successItemsCount", successItemsCount);
+                
+                double registeredItemsTotalPrice = adminService.getRegisteredItemsTotalPrice(adminLocation);
+                session.setAttribute("registeredItemsTotalPrice", registeredItemsTotalPrice);
+                
+                // Add to LoginServlet.java
+                double availableItemsTotalPrice = adminService.getAvailableItemsTotalPrice(adminLocation);
+                session.setAttribute("availableItemsTotalPrice", availableItemsTotalPrice);
+
+                double successItemsTotalPrice = adminService.getSuccessItemsTotalPrice(adminLocation);
+                session.setAttribute("successItemsTotalPrice", successItemsTotalPrice);
                 
                 response.sendRedirect("pages/OutletDashBoard.jsp");
             } else {
