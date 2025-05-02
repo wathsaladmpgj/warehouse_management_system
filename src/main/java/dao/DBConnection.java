@@ -5,11 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnection {
-<<<<<<< HEAD
     private static final String URL = "jdbc:mysql://localhost:3306/library_db";
-=======
-    private static final String URL = "jdbc:mysql://localhost:3306/warehouse_management";
->>>>>>> 452882442eb94d8526aa93362a550278ea0837e0
     private static final String USER = "root";
     private static final String PASSWORD = ""; // Your database password
     

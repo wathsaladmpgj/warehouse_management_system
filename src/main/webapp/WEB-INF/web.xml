@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<<<<<< HEAD
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
          http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          version="3.0">
     
-    <display-name>My Web Application</display-name>
+    <display-name>Warehouse Management System</display-name>
     
-=======
-<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-   
-    <display-name>My Web Application</display-name>
+    <!-- Servlet Declarations -->
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
@@ -24,6 +20,16 @@
         <servlet-name>StaffServlet</servlet-name>
         <servlet-class>controller.StaffServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddProductServlet</servlet-name>
+        <servlet-class>controller.AddProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>controller.LogoutServlet</servlet-class>
+    </servlet>
+
+    <!-- Servlet Mappings -->
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
@@ -32,17 +38,37 @@
         <servlet-name>HeadOffice_Servlet</servlet-name>
         <url-pattern>/HeadOffice_Servlet</url-pattern>
     </servlet-mapping>
-
-<<<<<<< HEAD
->>>>>>> 452882442eb94d8526aa93362a550278ea0837e0
-=======
     <servlet-mapping>
         <servlet-name>StaffServlet</servlet-name>
         <url-pattern>/StaffServlet</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddProductServlet</servlet-name>
+        <url-pattern>/AddProductServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/LogoutServlet</url-pattern>
+    </servlet-mapping>
 
->>>>>>> 9f15ee2c39902742c284ce51a4b958e90ad83775
+    <!-- Welcome Files -->
     <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+
+    <!-- Session Configuration -->
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <!-- Error Pages -->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/error500.jsp</location>
+    </error-page>
 </web-app>
