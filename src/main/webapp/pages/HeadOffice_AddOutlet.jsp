@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Staff Details | Head Office</title>
+        <title>Add Outlet | Head Office</title>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <style>
             /* Dark Blue Theme Variables */
@@ -171,38 +171,44 @@
                 color: var(--light);
             }
 
-            /* Table Styles */
-            .data-table {
-                width: 100%;
-                border-collapse: collapse;
-                margin-top: 1.5rem;
-                background-color: var(--primary-dark);
+            /* Form Styles */
+            .form-card {
+                background: var(--primary-dark);
                 border-radius: 0.5rem;
-                overflow: hidden;
+                padding: 1.5rem;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-                animation: fadeIn 0.6s 0.3s both;
+                border: 1px solid var(--primary-light);
+                max-width: 600px;
+                margin: 0 auto;
+                animation: fadeIn 0.6s ease-out forwards;
             }
 
-            .data-table th {
-                background-color: var(--primary);
-                color: var(--light);
-                padding: 1rem;
-                text-align: left;
+            .form-group {
+                margin-bottom: 1.5rem;
+            }
+
+            .form-label {
+                display: block;
+                margin-bottom: 0.5rem;
+                color: var(--gray-light);
                 font-weight: 500;
             }
 
-            .data-table td {
-                padding: 1rem;
-                border-bottom: 1px solid var(--primary-light);
-                color: var(--gray-light);
-            }
-
-            .data-table tr:nth-child(even) {
-                background-color: rgba(30, 58, 138, 0.2);
-            }
-
-            .data-table tr:hover {
+            .form-control {
+                width: 100%;
+                padding: 0.75rem;
+                border-radius: 0.375rem;
+                border: 1px solid var(--primary-light);
                 background-color: var(--primary);
+                color: var(--white);
+                font-family: 'Inter', sans-serif;
+                transition: var(--transition);
+            }
+
+            .form-control:focus {
+                outline: none;
+                border-color: var(--secondary);
+                box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.3);
             }
 
             /* Button Styles */
@@ -238,27 +244,26 @@
                 color: white;
             }
 
-            /* Stats Card */
-            .stats-card {
-                background-color: var(--primary-dark);
-                padding: 1.5rem;
-                border-radius: 0.5rem;
+            /* Message Styles */
+            .error-message {
+                color: var(--danger);
+                margin-top: 0.5rem;
+                font-size: 0.875rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .success-message {
+                color: var(--success);
                 margin-bottom: 1.5rem;
-                animation: fadeIn 0.6s 0.2s both;
-                border-left: 4px solid var(--secondary);
-            }
-
-            .stats-card h3 {
-                color: var(--light);
-                margin-top: 0;
-                margin-bottom: 1rem;
-            }
-
-            .stats-value {
-                font-size: 1.75rem;
-                font-weight: 700;
-                color: var(--white);
-                margin: 0.5rem 0;
+                padding: 1rem;
+                background-color: rgba(76, 175, 80, 0.1);
+                border-radius: 0.375rem;
+                border-left: 4px solid var(--success);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
             }
 
             /* Animations */
@@ -288,18 +293,13 @@
                     padding: 1rem;
                 }
 
-                .data-table {
-                    display: block;
-                    overflow-x: auto;
+                .form-card {
+                    padding: 1rem;
                 }
             }
         </style>
     </head>
     <body>
-        <c:if test="${staff == null}">
-            <c:redirect url='/StaffServlet' />
-        </c:if>
-
         <div class="dashboard-container">
             <!-- Sidebar Navigation -->
             <aside class="sidebar">
@@ -307,12 +307,12 @@
                     <h3>Head Office Panel</h3>
                 </div>
                 <nav>
-                    <div class="sidebar-item ">
+                     <div class="sidebar-item ">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp">
                             <i>🏠</i> Dashboard
                         </a>
                     </div>
-                    <div class="sidebar-item">
+                    <div class="sidebar-item active">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_AddOutlet.jsp">
                             <i>🏢</i> Add Outlet
                         </a>
@@ -327,7 +327,7 @@
                             <i>🏬</i> Outlet Details
                         </a>
                     </div>
-                    <div class="sidebar-item active">
+                    <div class="sidebar-item">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_StaffDetails.jsp">
                             <i>👥</i> Staff Details
                         </a>
@@ -339,7 +339,7 @@
             <main class="main-content">
                 <!-- Header -->
                 <header class="header">
-                    <h1>Staff Details</h1>
+                    <h1>Add New Outlet</h1>
                     <div class="user-info">
                         <span>Welcome, Head Office Admin</span>
                         <div class="user-avatar">
@@ -348,147 +348,79 @@
                     </div>
                 </header>
 
-                <!-- Staff Count Card -->
-                <div class="stats-card">
-                    <h3>👥 Total Staff Members</h3>
-                    <div class="stats-value">${staff.size()}</div>
-                    <p>Across all outlets</p>
+
+                <!-- Add Outlet Form -->
+                <div class="form-card">
                     <div class="card-header">
-                        <h2 class="card-title">All Staff Members</h2>
-                        <a href="StaffServlet?action=new" class="btn btn-primary">
-                            <i>➕</i> Add New Staff
-                        </a>
+                        <h2 class="card-title">Outlet Information</h2>
                     </div>
-                </div>
 
+                    <!-- Display error message if exists -->
+                    <c:if test="${not empty errorMessage}">
+                        <div class="error-message">
+                            <i>⚠️</i> ${errorMessage}
+                        </div>
+                    </c:if>
 
-                <!-- live search input -->
-                <div class="search-container" style="margin-bottom: 1.5rem; animation: fadeIn 0.6s 0.4s both;">
-                    <input type="text" id="staffSearch" placeholder="Search staff by name or outlet..." 
-                           style="padding: 0.75rem; width: 100%; border-radius: 0.375rem; 
-                           border: 1px solid var(--primary-light); background: var(--primary-dark); 
-                           color: var(--gray-light); font-family: inherit;">
-                </div>
+                    <form action="${pageContext.request.contextPath}/HeadOffice_OutletDetailsServlet" method="POST">
+                        <div class="form-group">
+                            <label for="outletName" class="form-label">Outlet Name</label>
+                            <input type="text" id="outletName" name="outletName" class="form-control" 
+                                   placeholder="Enter outlet name" required>
+                        </div>
 
-
-
-                <!-- Staff Details Table -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">All Staff Members</h2>
-                    </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Role</th>
-                                <th>Outlet</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach items="${staff}" var="staff">
-                                <tr>
-                                    <td>${staff.id}</td>
-                                    <td>${staff.name}</td>
-                                    <td>${staff.role}</td>
-                                    <td>${staff.location}</td>
-                                    <td>
-                                        <a href="StaffServlet?action=edit&id=${staff.id}" class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
-                                            Edit/Delete
-                                        </a>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Action Buttons -->
-                <div style="margin-top: 2rem; display: flex; justify-content: space-between; animation: fadeIn 0.6s 1s both">
-                    <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp" class="btn btn-primary">
-                        <i>⬅️</i> Back to Dashboard
-                    </a>
-                    <a href="${pageContext.request.contextPath}/pages/login.jsp" class="btn btn-logout">
-                        <i>🚪</i> Logout
-                    </a>
+                        <div style="margin-top: 2rem; display: flex; justify-content: flex-end; gap: 1rem;">
+                            <a href="${pageContext.request.contextPath}/HeadOffice_OutletDetailsServlet" class="btn btn-logout">
+                                <i>✖</i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i>✔</i> Add Outlet
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </main>
         </div>
 
         <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Mobile menu toggle
-        const mobileMenuToggle = document.createElement('button');
-        mobileMenuToggle.innerHTML = '☰';
-        mobileMenuToggle.style.position = 'fixed';
-        mobileMenuToggle.style.top = '1rem';
-        mobileMenuToggle.style.left = '1rem';
-        mobileMenuToggle.style.zIndex = '1000';
-        mobileMenuToggle.style.background = 'var(--primary)';
-        mobileMenuToggle.style.color = 'white';
-        mobileMenuToggle.style.border = 'none';
-        mobileMenuToggle.style.borderRadius = '50%';
-        mobileMenuToggle.style.width = '40px';
-        mobileMenuToggle.style.height = '40px';
-        mobileMenuToggle.style.display = 'none';
-        mobileMenuToggle.style.justifyContent = 'center';
-        mobileMenuToggle.style.alignItems = 'center';
-        mobileMenuToggle.style.cursor = 'pointer';
-
-        mobileMenuToggle.addEventListener('click', function () {
-            document.querySelector('.sidebar').classList.toggle('active');
-        });
-
-        document.body.appendChild(mobileMenuToggle);
-
-        // Show mobile menu button on small screens
-        function checkScreenSize() {
-            if (window.innerWidth <= 768) {
-                mobileMenuToggle.style.display = 'flex';
-            } else {
+            document.addEventListener('DOMContentLoaded', function () {
+                // Mobile menu toggle
+                const mobileMenuToggle = document.createElement('button');
+                mobileMenuToggle.innerHTML = '☰';
+                mobileMenuToggle.style.position = 'fixed';
+                mobileMenuToggle.style.top = '1rem';
+                mobileMenuToggle.style.left = '1rem';
+                mobileMenuToggle.style.zIndex = '1000';
+                mobileMenuToggle.style.background = 'var(--primary)';
+                mobileMenuToggle.style.color = 'white';
+                mobileMenuToggle.style.border = 'none';
+                mobileMenuToggle.style.borderRadius = '50%';
+                mobileMenuToggle.style.width = '40px';
+                mobileMenuToggle.style.height = '40px';
                 mobileMenuToggle.style.display = 'none';
-                document.querySelector('.sidebar').classList.remove('active');
-            }
-        }
+                mobileMenuToggle.style.justifyContent = 'center';
+                mobileMenuToggle.style.alignItems = 'center';
+                mobileMenuToggle.style.cursor = 'pointer';
 
-        window.addEventListener('resize', checkScreenSize);
-        checkScreenSize();
+                mobileMenuToggle.addEventListener('click', function () {
+                    document.querySelector('.sidebar').classList.toggle('active');
+                });
 
-        // Add hover effects to table rows
-        const tableRows = document.querySelectorAll('.data-table tr');
-        tableRows.forEach(row => {
-            row.addEventListener('mouseenter', function () {
-                this.style.backgroundColor = 'var(--primary-light)';
-            });
+                document.body.appendChild(mobileMenuToggle);
 
-            row.addEventListener('mouseleave', function () {
-                if (this.rowIndex % 2 === 0) {
-                    this.style.backgroundColor = 'rgba(30, 58, 138, 0.2)';
-                } else {
-                    this.style.backgroundColor = 'var(--primary-dark)';
+                // Show mobile menu button on small screens
+                function checkScreenSize() {
+                    if (window.innerWidth <= 768) {
+                        mobileMenuToggle.style.display = 'flex';
+                    } else {
+                        mobileMenuToggle.style.display = 'none';
+                        document.querySelector('.sidebar').classList.remove('active');
+                    }
                 }
-            });
-        });
 
-        // Live search functionality
-        document.getElementById('staffSearch').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const rows = document.querySelectorAll('.data-table tbody tr');
-            
-            rows.forEach(row => {
-                const name = row.cells[1].textContent.toLowerCase(); // Name column (index 1)
-                const outlet = row.cells[3].textContent.toLowerCase(); // Outlet column (index 3)
-                
-                if (name.includes(searchTerm) || outlet.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+                window.addEventListener('resize', checkScreenSize);
+                checkScreenSize();
             });
-        });
-    });
-</script>
+        </script>
     </body>
 </html>

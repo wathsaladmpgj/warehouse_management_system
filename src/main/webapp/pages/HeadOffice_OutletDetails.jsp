@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Staff Details | Head Office</title>
+        <title>Outlet Details | Head Office</title>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <style>
             /* Dark Blue Theme Variables */
@@ -238,27 +238,51 @@
                 color: white;
             }
 
-            /* Stats Card */
-            .stats-card {
+            /* Top Performer Styles */
+            .top-performer {
                 background-color: var(--primary-dark);
+                border-left: 4px solid var(--success);
                 padding: 1.5rem;
                 border-radius: 0.5rem;
                 margin-bottom: 1.5rem;
                 animation: fadeIn 0.6s 0.2s both;
-                border-left: 4px solid var(--secondary);
             }
 
-            .stats-card h3 {
+            .top-performer h3 {
                 color: var(--light);
                 margin-top: 0;
                 margin-bottom: 1rem;
+                font-size: 1.25rem;
             }
 
-            .stats-value {
-                font-size: 1.75rem;
-                font-weight: 700;
-                color: var(--white);
+            .btn-delete {
+                background: none;
+                border: none;
+                color: var(--danger);
+                cursor: pointer;
+                font-size: 1.1rem;
+                padding: 0.25rem 0.5rem;
+                border-radius: 0.25rem;
+                transition: var(--transition);
+            }
+
+            .btn-delete:hover {
+                background-color: rgba(244, 67, 54, 0.1);
+                transform: scale(1.1);
+            }
+
+            .data-table td:last-child {
+                text-align: center;
+            }
+
+            .top-performer p {
                 margin: 0.5rem 0;
+                color: var(--gray-light);
+            }
+
+            .top-performer strong {
+                color: var(--white);
+                font-weight: 600;
             }
 
             /* Animations */
@@ -296,8 +320,8 @@
         </style>
     </head>
     <body>
-        <c:if test="${staff == null}">
-            <c:redirect url='/StaffServlet' />
+        <c:if test="${headOffice_OutletDetails == null}">
+            <c:redirect url='/HeadOffice_OutletDetailsServlet' />
         </c:if>
 
         <div class="dashboard-container">
@@ -322,12 +346,12 @@
                             <i>📊</i> View Report
                         </a>
                     </div>
-                    <div class="sidebar-item">
+                    <div class="sidebar-item active">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_OutletDetails.jsp">
                             <i>🏬</i> Outlet Details
                         </a>
                     </div>
-                    <div class="sidebar-item active">
+                    <div class="sidebar-item">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_StaffDetails.jsp">
                             <i>👥</i> Staff Details
                         </a>
@@ -339,7 +363,7 @@
             <main class="main-content">
                 <!-- Header -->
                 <header class="header">
-                    <h1>Staff Details</h1>
+                    <h1>Outlet Details</h1>
                     <div class="user-info">
                         <span>Welcome, Head Office Admin</span>
                         <div class="user-avatar">
@@ -348,55 +372,61 @@
                     </div>
                 </header>
 
-                <!-- Staff Count Card -->
-                <div class="stats-card">
-                    <h3>👥 Total Staff Members</h3>
-                    <div class="stats-value">${staff.size()}</div>
-                    <p>Across all outlets</p>
-                    <div class="card-header">
-                        <h2 class="card-title">All Staff Members</h2>
-                        <a href="StaffServlet?action=new" class="btn btn-primary">
-                            <i>➕</i> Add New Staff
-                        </a>
-                    </div>
+                <!-- Top Performing Outlet Card -->
+                <div class="top-performer">
+                    <h3>🏆 Top Performing Outlet</h3>
+                    <c:choose>
+                        <c:when test="${not empty topOutlet}">
+                            <p><strong>${topOutlet.outletName}</strong></p>
+                            <p>Total Registered Items: <strong>${topOutlet.totalRegisteredItems}</strong></p>
+                        </c:when>
+                        <c:otherwise>
+                            <p>No outlet data available</p>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
 
+                <!--                Live search input-->
 
-                <!-- live search input -->
                 <div class="search-container" style="margin-bottom: 1.5rem; animation: fadeIn 0.6s 0.4s both;">
-                    <input type="text" id="staffSearch" placeholder="Search staff by name or outlet..." 
+                    <input type="text" id="outletSearch" placeholder="Search outlets..." 
                            style="padding: 0.75rem; width: 100%; border-radius: 0.375rem; 
                            border: 1px solid var(--primary-light); background: var(--primary-dark); 
                            color: var(--gray-light); font-family: inherit;">
                 </div>
 
 
-
-                <!-- Staff Details Table -->
+                <!-- Outlet Details Table -->
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="card-title">All Staff Members</h2>
+                        <h2 class="card-title">All Outlets</h2>
                     </div>
                     <table class="data-table">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
-                                <th>Role</th>
-                                <th>Outlet</th>
-                                <th>Action</th>
+                                <th>Outlet Name</th>
+                                <th>Registered Items</th>
+                                <th>Returned Items</th>
+                                <th>Remaining Returns</th>
+                                <th>Available Items</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach items="${staff}" var="staff">
+                            <c:forEach items="${headOffice_OutletDetails}" var="outlet">
                                 <tr>
-                                    <td>${staff.id}</td>
-                                    <td>${staff.name}</td>
-                                    <td>${staff.role}</td>
-                                    <td>${staff.location}</td>
+                                    <td>${outlet.id}</td>
+                                    <td>${outlet.outletName}</td>
+                                    <td>${outlet.totalRegisteredItems}</td>
+                                    <td>${outlet.totalReturnedItems}</td>
+                                    <td>${outlet.remainingReturnedItems}</td>
+                                    <td>${outlet.availableNewItems}</td>
                                     <td>
-                                        <a href="StaffServlet?action=edit&id=${staff.id}" class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
-                                            Edit/Delete
+                                        <a href="${pageContext.request.contextPath}/HeadOffice_OutletDetailsServlet?delete=${outlet.id}" 
+                                           class="btn btn-danger" 
+                                           onclick="return confirm('Are you sure you want to delete this outlet?')">
+                                            Delete
                                         </a>
                                     </td>
                                 </tr>
@@ -418,77 +448,103 @@
         </div>
 
         <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Mobile menu toggle
-        const mobileMenuToggle = document.createElement('button');
-        mobileMenuToggle.innerHTML = '☰';
-        mobileMenuToggle.style.position = 'fixed';
-        mobileMenuToggle.style.top = '1rem';
-        mobileMenuToggle.style.left = '1rem';
-        mobileMenuToggle.style.zIndex = '1000';
-        mobileMenuToggle.style.background = 'var(--primary)';
-        mobileMenuToggle.style.color = 'white';
-        mobileMenuToggle.style.border = 'none';
-        mobileMenuToggle.style.borderRadius = '50%';
-        mobileMenuToggle.style.width = '40px';
-        mobileMenuToggle.style.height = '40px';
-        mobileMenuToggle.style.display = 'none';
-        mobileMenuToggle.style.justifyContent = 'center';
-        mobileMenuToggle.style.alignItems = 'center';
-        mobileMenuToggle.style.cursor = 'pointer';
-
-        mobileMenuToggle.addEventListener('click', function () {
-            document.querySelector('.sidebar').classList.toggle('active');
-        });
-
-        document.body.appendChild(mobileMenuToggle);
-
-        // Show mobile menu button on small screens
-        function checkScreenSize() {
-            if (window.innerWidth <= 768) {
-                mobileMenuToggle.style.display = 'flex';
-            } else {
+            document.addEventListener('DOMContentLoaded', function () {
+                // Mobile menu toggle
+                const mobileMenuToggle = document.createElement('button');
+                mobileMenuToggle.innerHTML = '☰';
+                mobileMenuToggle.style.position = 'fixed';
+                mobileMenuToggle.style.top = '1rem';
+                mobileMenuToggle.style.left = '1rem';
+                mobileMenuToggle.style.zIndex = '1000';
+                mobileMenuToggle.style.background = 'var(--primary)';
+                mobileMenuToggle.style.color = 'white';
+                mobileMenuToggle.style.border = 'none';
+                mobileMenuToggle.style.borderRadius = '50%';
+                mobileMenuToggle.style.width = '40px';
+                mobileMenuToggle.style.height = '40px';
                 mobileMenuToggle.style.display = 'none';
-                document.querySelector('.sidebar').classList.remove('active');
-            }
-        }
+                mobileMenuToggle.style.justifyContent = 'center';
+                mobileMenuToggle.style.alignItems = 'center';
+                mobileMenuToggle.style.cursor = 'pointer';
 
-        window.addEventListener('resize', checkScreenSize);
-        checkScreenSize();
+                mobileMenuToggle.addEventListener('click', function () {
+                    document.querySelector('.sidebar').classList.toggle('active');
+                });
 
-        // Add hover effects to table rows
-        const tableRows = document.querySelectorAll('.data-table tr');
-        tableRows.forEach(row => {
-            row.addEventListener('mouseenter', function () {
-                this.style.backgroundColor = 'var(--primary-light)';
-            });
+                document.body.appendChild(mobileMenuToggle);
 
-            row.addEventListener('mouseleave', function () {
-                if (this.rowIndex % 2 === 0) {
-                    this.style.backgroundColor = 'rgba(30, 58, 138, 0.2)';
-                } else {
-                    this.style.backgroundColor = 'var(--primary-dark)';
+                // Show mobile menu button on small screens
+                function checkScreenSize() {
+                    if (window.innerWidth <= 768) {
+                        mobileMenuToggle.style.display = 'flex';
+                    } else {
+                        mobileMenuToggle.style.display = 'none';
+                        document.querySelector('.sidebar').classList.remove('active');
+                    }
                 }
-            });
-        });
 
-        // Live search functionality
-        document.getElementById('staffSearch').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const rows = document.querySelectorAll('.data-table tbody tr');
-            
-            rows.forEach(row => {
-                const name = row.cells[1].textContent.toLowerCase(); // Name column (index 1)
-                const outlet = row.cells[3].textContent.toLowerCase(); // Outlet column (index 3)
-                
-                if (name.includes(searchTerm) || outlet.includes(searchTerm)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
+                window.addEventListener('resize', checkScreenSize);
+                checkScreenSize();
+
+                // Add hover effects to table rows
+                const tableRows = document.querySelectorAll('.data-table tr');
+                tableRows.forEach(row => {
+                    row.addEventListener('mouseenter', function () {
+                        this.style.backgroundColor = 'var(--primary-light)';
+                    });
+
+                    row.addEventListener('mouseleave', function () {
+                        if (this.rowIndex % 2 === 0) {
+                            this.style.backgroundColor = 'rgba(30, 58, 138, 0.2)';
+                        } else {
+                            this.style.backgroundColor = 'var(--primary-dark)';
+                        }
+                    });
+                });
             });
-        });
-    });
-</script>
+
+
+
+            // Delete outlet functionality
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const outletId = this.getAttribute('data-id');
+                    if (confirm('Are you sure you want to delete this outlet?')) {
+                        fetch('${pageContext.request.contextPath}/DeleteOutletServlet?id=' + outletId, {
+                            method: 'POST'
+                        })
+                                .then(response => {
+                                    if (response.ok) {
+                                        // Reload the page to see changes
+                                        window.location.reload();
+                                    } else {
+                                        alert('Failed to delete outlet');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('An error occurred while deleting the outlet');
+                                });
+                    }
+                });
+            });
+
+
+
+            // Live search functionality
+            document.getElementById('outletSearch').addEventListener('input', function () {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('.data-table tbody tr');
+
+                rows.forEach(row => {
+                    const outletName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    if (outletName.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
