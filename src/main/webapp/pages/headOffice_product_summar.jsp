@@ -231,7 +231,9 @@
     }
 %>
 
-    <div class="dashboard-container">
+
+<div class="dashboard-container">
+    <!-- Sidebar Navigation -->
         <!-- Sidebar Navigation -->
             <aside class="sidebar">
                 <div class="sidebar-header">
@@ -332,6 +334,5 @@
             </div>
         </main>
     </div>
-
 </body>
 </html>
