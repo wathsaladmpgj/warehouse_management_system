@@ -50,10 +50,14 @@ public class AddProductServlet extends HttpServlet {
         PreparedStatement postalLookupStmt = null;
         PreparedStatement distancePriceStmt = null;
         PreparedStatement weightPriceStmt = null;
+        PreparedStatement countReturnedItemsStmt = null;
+        PreparedStatement countNewItemsStmt = null;
         ResultSet postalRs = null;
         ResultSet distancePriceRs = null;
         ResultSet weightPriceRs = null;
         ResultSet countItemsRs = null;
+        ResultSet countReturnedItemsRs = null;
+        ResultSet countNewItemsRs = null;
 
         try {
             double productWeight = Double.parseDouble(productWeightStr);
@@ -202,11 +206,42 @@ public class AddProductServlet extends HttpServlet {
                 itemCount = countItemsRs.getInt("item_count");
             }
 
-            // 5b. Update outlet_details with the new count
-            String outletUpdateSql = "UPDATE outlet_details SET total_registered_items = ? WHERE outlet_name = ?";
+            // 5b. Count returned items for this outlet
+            String countReturnedItemsSql = "SELECT COUNT(*) AS returned_count FROM location_tracking " +
+                                         "WHERE tracking_update = 'Return_' + ?";
+            countReturnedItemsStmt = conn.prepareStatement(countReturnedItemsSql);
+            countReturnedItemsStmt.setString(1, adminLocation);
+            countReturnedItemsRs = countReturnedItemsStmt.executeQuery();
+            
+            int returnedCount = 0;
+            if (countReturnedItemsRs.next()) {
+                returnedCount = countReturnedItemsRs.getInt("returned_count");
+            }
+
+            // 5c. Count new items for this outlet
+            String countNewItemsSql = "SELECT COUNT(*) AS new_count FROM location_tracking " +
+                                    "WHERE from_location = ? AND tracking_update = ?";
+            countNewItemsStmt = conn.prepareStatement(countNewItemsSql);
+            countNewItemsStmt.setString(1, adminLocation);
+            countNewItemsStmt.setString(2, adminLocation);
+            countNewItemsRs = countNewItemsStmt.executeQuery();
+            
+            int newCount = 0;
+            if (countNewItemsRs.next()) {
+                newCount = countNewItemsRs.getInt("new_count");
+            }
+
+            // 5d. Update outlet_details with all counts
+            String outletUpdateSql = "UPDATE outlet_details SET " +
+                                    "total_registered_items = ?, " +
+                                    "remaining_returned_items = ?, " +
+                                    "available_new_items = ? " +
+                                    "WHERE outlet_name = ?";
             outletUpdateStmt = conn.prepareStatement(outletUpdateSql);
             outletUpdateStmt.setInt(1, itemCount);
-            outletUpdateStmt.setString(2, adminLocation);
+            outletUpdateStmt.setInt(2, returnedCount);
+            outletUpdateStmt.setInt(3, newCount);
+            outletUpdateStmt.setString(4, adminLocation);
             
             int outletUpdateResult = outletUpdateStmt.executeUpdate();
             
@@ -243,10 +278,14 @@ public class AddProductServlet extends HttpServlet {
                 if (distancePriceRs != null) distancePriceRs.close();
                 if (weightPriceRs != null) weightPriceRs.close();
                 if (countItemsRs != null) countItemsRs.close();
+                if (countReturnedItemsRs != null) countReturnedItemsRs.close();
+                if (countNewItemsRs != null) countNewItemsRs.close();
                 if (postalLookupStmt != null) postalLookupStmt.close();
                 if (distancePriceStmt != null) distancePriceStmt.close();
                 if (weightPriceStmt != null) weightPriceStmt.close();
                 if (countItemsStmt != null) countItemsStmt.close();
+                if (countReturnedItemsStmt != null) countReturnedItemsStmt.close();
+                if (countNewItemsStmt != null) countNewItemsStmt.close();
                 if (outletUpdateStmt != null) outletUpdateStmt.close();
                 if (productStmt != null) productStmt.close();
                 if (trackingStmt != null) trackingStmt.close();
