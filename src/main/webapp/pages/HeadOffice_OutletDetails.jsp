@@ -333,7 +333,7 @@
                 <nav>
                     <div class="sidebar-item ">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp">
-                            <i>🏢</i> Dashboard
+                            <i>🏠</i> Dashboard
                         </a>
                     </div>
                     <div class="sidebar-item">
@@ -342,7 +342,7 @@
                         </a>
                     </div>
                     <div class="sidebar-item">
-                        <a href="${pageContext.request.contextPath}/pages/tracking.jsp">
+                        <a href="${pageContext.request.contextPath}/pages/headOffice_product_summar.jsp">
                             <i>📊</i> View Report
                         </a>
                     </div>
@@ -385,6 +385,16 @@
                         </c:otherwise>
                     </c:choose>
                 </div>
+
+                <!--                Live search input-->
+
+                <div class="search-container" style="margin-bottom: 1.5rem; animation: fadeIn 0.6s 0.4s both;">
+                    <input type="text" id="outletSearch" placeholder="Search outlets..." 
+                           style="padding: 0.75rem; width: 100%; border-radius: 0.375rem; 
+                           border: 1px solid var(--primary-light); background: var(--primary-dark); 
+                           color: var(--gray-light); font-family: inherit;">
+                </div>
+
 
                 <!-- Outlet Details Table -->
                 <div class="card">
@@ -515,6 +525,23 @@
                                     console.error('Error:', error);
                                     alert('An error occurred while deleting the outlet');
                                 });
+                    }
+                });
+            });
+
+
+
+            // Live search functionality
+            document.getElementById('outletSearch').addEventListener('input', function () {
+                const searchTerm = this.value.toLowerCase();
+                const rows = document.querySelectorAll('.data-table tbody tr');
+
+                rows.forEach(row => {
+                    const outletName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    if (outletName.includes(searchTerm)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
                     }
                 });
             });

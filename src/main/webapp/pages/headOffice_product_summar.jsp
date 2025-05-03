@@ -238,9 +238,9 @@
                     <h3>Head Office Panel</h3>
                 </div>
                 <nav>
-                    <div class="sidebar-item active">
+                    <div class="sidebar-item ">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp">
-                            <i>🏢</i> Dashboard
+                            <i>🏠</i> Dashboard
                         </a>
                     </div>
                     <div class="sidebar-item ">
@@ -248,8 +248,8 @@
                             <i>🏢</i> Add Outlet
                         </a>
                     </div>
-                    <div class="sidebar-item">
-                        <a href="${pageContext.request.contextPath}/pages/tracking.jsp">
+                    <div class="sidebar-item active">
+                        <a href="${pageContext.request.contextPath}/pages/headOffice_product_summar.jsp">
                             <i>📊</i> View Report
                         </a>
                     </div>
