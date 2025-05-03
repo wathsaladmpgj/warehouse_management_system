@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.MonthlyReport" %>
+<%@ page import="model.Admin" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="java.util.Locale" %>
 <%@ page import="java.time.YearMonth" %>
@@ -30,7 +31,20 @@
         .sidebar {
             width: 250px;
             background-color: #004494;
-            padding: 20px 0;
+            padding: 0;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            color: white;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-header h3 {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 20px;
         }
         
         .sidebar-item {
@@ -43,11 +57,21 @@
             text-decoration: none;
             font-family: 'Montserrat', sans-serif;
             font-weight: 500;
-            display: block;
+            display: flex;
+            align-items: center;
+        }
+        
+        .sidebar-item i {
+            margin-right: 10px;
+            font-style: normal;
         }
         
         .sidebar-item:hover {
             background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
         }
         
         .main-content {
@@ -97,21 +121,6 @@
             border-radius: 4px;
             font-family: 'Roboto', sans-serif;
             margin-right: 10px;
-        }
-        
-        .filter-section button {
-            background-color: #004494;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 4px;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 500;
-            cursor: pointer;
-        }
-        
-        .filter-section button:hover {
-            background-color: #003366;
         }
         
         table {
@@ -166,11 +175,40 @@
             color: #004494;
         }
     </style>
+    <script>
+        function submitForm() {
+            document.getElementById('yearForm').submit();
+        }
+    </script>
 </head>
 <body>
     <%
+        // Get current year for the dropdown
+        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        
+        // Get selected year from request parameter
+        String selectedYear = request.getParameter("year");
+        if (selectedYear == null || selectedYear.isEmpty()) {
+            selectedYear = String.valueOf(currentYear);
+            // Auto-redirect on first load
+            if (request.getAttribute("monthlyReports") == null) {
+                response.sendRedirect(request.getContextPath() + "/delivery-report?year=" + currentYear);
+                return;
+            }
+        }
+        
         List<MonthlyReport> reports = (List<MonthlyReport>) request.getAttribute("monthlyReports");
         String outletLocation = (String) request.getAttribute("outletLocation");
+        
+        // If outletLocation is null, get it from session
+        if (outletLocation == null || outletLocation.equals("null")) {
+            Admin admin = (Admin) session.getAttribute("admin");
+            if (admin != null) {
+                outletLocation = admin.getOutletLocation();
+            } else {
+                outletLocation = "Unknown";
+            }
+        }
         
         // Calculate totals
         int totalDeliveries = 0;
@@ -182,25 +220,56 @@
                 totalRevenue = totalRevenue.add(report.getTotalRevenue());
             }
         }
-        
-        // Get current year for the dropdown
-        int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        
-        // Get selected year from request parameter
-        String selectedYear = request.getParameter("year");
     %>
     
     <div class="container">
-        <div class="sidebar">
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/home.jsp">Home page</a></div>
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/tracking.jsp">Tracking page</a></div>
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/delivery-report">Monthly Sales Report</a></div> 
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/add-product.jsp">Add Product</a></div>
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/product-details.jsp">Product Details</a></div>
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/item-details.jsp">Inventory Details</a></div>
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/add-staff.jsp">Add Staff</a></div>
-            <div class="sidebar-item"><a href="${pageContext.request.contextPath}/pages/staff-management.jsp">Staff Management</a></div>
-        </div>
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>Admin Panel</h3>
+            </div>
+            <nav>
+                <div class="sidebar-item">
+                    <a href="${pageContext.request.contextPath}/pages/home.jsp">
+                        <i>📊</i> Dashboard
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="${pageContext.request.contextPath}/pages/tracking.jsp">
+                        <i>🔍</i> Tracking
+                    </a>
+                </div>
+                <div class="sidebar-item active">
+                    <a href="${pageContext.request.contextPath}/delivery-report">
+                        <i>📈</i> Sales Report
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="${pageContext.request.contextPath}/pages/addProduct.jsp">
+                        <i>➕</i> Add Product
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="${pageContext.request.contextPath}/pages/product-details.jsp">
+                        <i>📋</i> Product Details
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="${pageContext.request.contextPath}/pages/item-details.jsp">
+                        <i>📦</i> Inventory
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="${pageContext.request.contextPath}/pages/add-staff.jsp">
+                        <i>👥</i> Add Staff
+                    </a>
+                </div>
+                <div class="sidebar-item">
+                    <a href="${pageContext.request.contextPath}/pages/staff-management.jsp">
+                        <i>👔</i> Staff Management
+                    </a>
+                </div>
+            </nav>
+        </aside>
         
         <div class="main-content">
             <div class="header">
@@ -209,15 +278,13 @@
             
             <div class="content-area">
                 <div class="filter-section">
-                    <form action="${pageContext.request.contextPath}/delivery-report" method="get">
+                    <form id="yearForm" action="${pageContext.request.contextPath}/delivery-report" method="get">
                         <label for="year">Filter by Year:</label>
-                        <select name="year" id="year">
-                            <option value="">All Years</option>
+                        <select name="year" id="year" onchange="submitForm()">
                             <% for(int year = currentYear; year >= currentYear - 5; year--) { %>
                                 <option value="<%= year %>" <%= (String.valueOf(year).equals(selectedYear) ? "selected" : "") %>><%= year %></option>
                             <% } %>
                         </select>
-                        <button type="submit">Apply Filter</button>
                     </form>
                 </div>
                 
