@@ -231,6 +231,7 @@
     }
 %>
 
+
 <div class="dashboard-container">
     <!-- Sidebar Navigation -->
         <!-- Sidebar Navigation -->
@@ -288,52 +289,50 @@
             
             
             <div class="monthly-summary-section">
-    <h2>Monthly Product Summary</h2>
+                <h2>Monthly Product Summary</h2>
 
-    <form id="summaryForm" class="summary-form" method="get" action="<%= request.getContextPath() %>/HeadProductSummary">
-        <div>
-            <label for="yearSelect">Select Year:</label>
-            <select id="yearSelect" name="year" onchange="autoSubmit()">
-                <% for (int y = currentYear; y >= 2023; y--) { 
-                    String selected = (y == selectedYear) ? "selected" : "";
-                %>
-                    <option value="<%= y %>" <%= selected %>><%= y %></option>
-                <% } %>
-            </select>
-        </div>
-    </form>
+                <form id="summaryForm" class="summary-form" method="get" action="<%= request.getContextPath() %>/HeadProductSummary">
+                    <div>
+                        <label for="yearSelect">Select Year:</label>
+                        <select id="yearSelect" name="year" onchange="autoSubmit()">
+                            <% for (int y = currentYear; y >= 2023; y--) { 
+                                String selected = (y == selectedYear) ? "selected" : "";
+                            %>
+                               <option value="<%= y %>" <%= selected %>><%= y %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                </form>
 
-    <h3 class="year-display">Year: <%= selectedYear %></h3>
+                <h3 class="year-display">Year: <%= selectedYear %></h3>
 
-    <div class="table-container">
-        <table class="summary-table">
-            <thead>
-                <tr>
-                    <th>Month</th>
-                    <th>Number of Items</th>
-                    <th>Total Price (Rs.)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% if (!summaryList.isEmpty()) { 
-                    for (Map<String, Object> row : summaryList) { %>
-                <tr>
-                    <td><%= row.get("month") %></td>
-                    <td><%= row.get("items") %></td>
-                    <td><%= String.format("%,.2f", row.get("total_price")) %></td>
-                </tr>
-                <% } } else { %>
-                <tr>
-                    <td colspan="3" class="no-data-message">No data found for <%= selectedYear %></td>
-                </tr>
-                <% } %>
-            </tbody>
-        </table>
-    </div>
-</div>
+                <div class="table-container">
+                    <table class="summary-table">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th>Number of Items</th>
+                                <th>Total Price (Rs.)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (!summaryList.isEmpty()) { 
+                                for (Map<String, Object> row : summaryList) { %>
+                            <tr>
+                                <td><%= row.get("month") %></td>
+                                <td><%= row.get("items") %></td>
+                                <td><%= String.format("%,.2f", row.get("total_price")) %></td>
+                            </tr>
+                            <% } } else { %>
+                            <tr>
+                                <td colspan="3" class="no-data-message">No data found for <%= selectedYear %></td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </main>
-</div>
-</div>
-
+    </div>
 </body>
 </html>
