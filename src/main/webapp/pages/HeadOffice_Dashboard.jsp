@@ -343,7 +343,7 @@
                 <nav>
                     <div class="sidebar-item active">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp">
-                            <i>🏢</i> Dashboard
+                            <i>🏠</i> Dashboard
                         </a>
                     </div>
                     <div class="sidebar-item ">
@@ -352,7 +352,7 @@
                         </a>
                     </div>
                     <div class="sidebar-item">
-                        <a href="${pageContext.request.contextPath}/pages/tracking.jsp">
+                        <a href="${pageContext.request.contextPath}/pages/headOffice_product_summar.jsp">
                             <i>📊</i> View Report
                         </a>
                     </div>

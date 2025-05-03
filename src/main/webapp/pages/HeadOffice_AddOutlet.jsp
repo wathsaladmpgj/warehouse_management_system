@@ -309,7 +309,7 @@
                 <nav>
                      <div class="sidebar-item ">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp">
-                            <i>🏢</i> Dashboard
+                            <i>🏠</i> Dashboard
                         </a>
                     </div>
                     <div class="sidebar-item active">
@@ -318,7 +318,7 @@
                         </a>
                     </div>
                     <div class="sidebar-item">
-                        <a href="${pageContext.request.contextPath}/pages/tracking.jsp">
+                        <a href="${pageContext.request.contextPath}/pages/headOffice_product_summar.jsp">
                             <i>📊</i> View Report
                         </a>
                     </div>
@@ -347,37 +347,6 @@
                         </div>
                     </div>
                 </header>
-
-
-
-                <!-- Live Search Existing Outlet Card -->
-                <div class="form-card" style="margin-bottom:2rem;">
-                    <div class="card-header">
-                        <h2 class="card-title">Search Existing Outlet</h2>
-                    </div>
-                    <div class="form-group" style="position:relative;">
-                        <label for="liveOutletSearch" class="form-label">Outlet Name</label>
-                        <input type="text" id="liveOutletSearch" class="form-control" autocomplete="off" placeholder="Type to search...">
-                        <ul id="liveOutletResults" style="display:none; position:absolute; z-index:10; background:#222; color:#fff; width:100%; border-radius:4px; box-shadow:0 2px 8px #0003; margin-top:2px; padding:0; list-style:none;"></ul>
-                    </div>
-                </div>
-
-                <!-- Modal for Adding Postal Code -->
-                <div id="postalCodeModal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:2000;">
-                    <div style="background:#fff; color:#222; padding:2rem; border-radius:8px; max-width:400px;">
-                        <h3>Add Postal Code for <span id="modalOutletName"></span></h3>
-                        <form id="postalCodeForm">
-                            <input type="hidden" id="hiddenOutletName" name="outletName">
-                            <div class="form-group">
-                                <label for="postalCode">Postal Code</label>
-                                <input type="text" id="postalCode" name="postalCode" class="form-control" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary" id="savePostalCodeBtn">Save Postal Code</button>
-                            <button type="button" class="btn btn-logout" onclick="closePostalModal()">Cancel</button>
-                        </form>
-                    </div>
-                </div>
-
 
 
                 <!-- Add Outlet Form -->
@@ -453,99 +422,5 @@
                 checkScreenSize();
             });
         </script>
-        
-        <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('liveOutletSearch');
-    const resultsList = document.getElementById('liveOutletResults');
-    let searchTimeout = null;
-
-    // Live search as user types
-    searchInput.addEventListener('input', function() {
-        clearTimeout(searchTimeout);
-        const query = this.value.trim();
-        if (query.length === 0) {
-            resultsList.style.display = 'none';
-            resultsList.innerHTML = '';
-            return;
-        }
-        searchTimeout = setTimeout(() => {
-            fetch('${pageContext.request.contextPath}/OutletLiveSearchServlet?q=' + encodeURIComponent(query))
-                .then(res => res.json())
-                .then(data => {
-                    resultsList.innerHTML = '';
-                    if (data.length === 0) {
-                        resultsList.style.display = 'none';
-                        return;
-                    }
-                    data.forEach(outlet => {
-                        const li = document.createElement('li');
-                        li.textContent = outlet.outletName;
-                        li.style.padding = '0.5rem 1rem';
-                        li.style.cursor = 'pointer';
-                        li.addEventListener('click', function() {
-                            selectOutlet(outlet.outletName);
-                        });
-                        resultsList.appendChild(li);
-                    });
-                    resultsList.style.display = 'block';
-                });
-        }, 200); // Debounce for 200ms
-    });
-
-    // Hide dropdown if clicked outside
-    document.addEventListener('click', function(e) {
-        if (!searchInput.contains(e.target) && !resultsList.contains(e.target)) {
-            resultsList.style.display = 'none';
-        }
-    });
-
-    // When an outlet is selected from dropdown
-    function selectOutlet(outletName) {
-        searchInput.value = outletName;
-        resultsList.style.display = 'none';
-
-        // Ensure outlet exists in warehouse_postal_codes, then show modal
-        fetch('${pageContext.request.contextPath}/EnsurePostalCodeOutletServlet', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: 'outletName=' + encodeURIComponent(outletName)
-        })
-        .then(() => {
-            // Show modal to add postal code
-            document.getElementById('modalOutletName').textContent = outletName;
-            document.getElementById('hiddenOutletName').value = outletName;
-            document.getElementById('postalCodeModal').style.display = 'flex';
-        });
-    }
-
-    // Handle modal form submission (save postal code)
-    document.getElementById('postalCodeForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const outletName = document.getElementById('hiddenOutletName').value;
-        const postalCode = document.getElementById('postalCode').value;
-        fetch('${pageContext.request.contextPath}/SavePostalCodeServlet', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: 'outletName=' + encodeURIComponent(outletName) + '&postalCode=' + encodeURIComponent(postalCode)
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                alert('Postal code saved!');
-                closePostalModal();
-            } else {
-                alert('Failed to save postal code.');
-            }
-        });
-    });
-
-    window.closePostalModal = function() {
-        document.getElementById('postalCodeModal').style.display = 'none';
-        document.getElementById('postalCode').value = '';
-    }
-});
-</script>
-
     </body>
 </html>
