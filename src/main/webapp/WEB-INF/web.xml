@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
-                             http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+<web-app version="2.4" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+                             http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <display-name>Staff Management System</display-name>
 
-    <display-name>My Web Application</display-name>
-
-    <!-- Servlets -->
+    <!-- Servlet Definitions -->
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
     </servlet>
-
+    
     <servlet>
         <servlet-name>HeadOffice_Servlet</servlet-name>
         <servlet-class>controller.HeadOffice_Servlet</servlet-class>
     </servlet>
-
+    
     <servlet>
         <servlet-name>StaffServlet</servlet-name>
         <servlet-class>controller.StaffServlet</servlet-class>
     </servlet>
-
+    
     <servlet>
         <servlet-name>HeadOffice_OutletDetailsServlet</servlet-name>
         <servlet-class>controller.HeadOffice_OutletDetailsServlet</servlet-class>
@@ -32,17 +31,17 @@
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/LoginServlet</url-pattern>
     </servlet-mapping>
-
+    
     <servlet-mapping>
         <servlet-name>HeadOffice_Servlet</servlet-name>
         <url-pattern>/HeadOffice_Servlet</url-pattern>
     </servlet-mapping>
-
+    
     <servlet-mapping>
         <servlet-name>StaffServlet</servlet-name>
         <url-pattern>/StaffServlet</url-pattern>
     </servlet-mapping>
-
+    
     <servlet-mapping>
         <servlet-name>HeadOffice_OutletDetailsServlet</servlet-name>
         <url-pattern>/HeadOffice_OutletDetailsServlet</url-pattern>
