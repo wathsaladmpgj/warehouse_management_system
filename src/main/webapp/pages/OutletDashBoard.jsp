@@ -340,6 +340,7 @@
             animation: pulse 2s infinite;
         }
     </style>
+    
 </head>
 <body>
     <div class="dashboard-container">
