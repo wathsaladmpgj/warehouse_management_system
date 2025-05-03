@@ -309,7 +309,7 @@
                 <nav>
                     <div class="sidebar-item ">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp">
-                            <i>🏢</i> Dashboard
+                            <i>🏠</i> Dashboard
                         </a>
                     </div>
                     <div class="sidebar-item">
@@ -318,7 +318,7 @@
                         </a>
                     </div>
                     <div class="sidebar-item">
-                        <a href="${pageContext.request.contextPath}/pages/tracking.jsp">
+                        <a href="${pageContext.request.contextPath}/pages/headOffice_product_summar.jsp">
                             <i>📊</i> View Report
                         </a>
                     </div>
@@ -360,6 +360,17 @@
                         </a>
                     </div>
                 </div>
+
+
+                <!-- live search input -->
+                <div class="search-container" style="margin-bottom: 1.5rem; animation: fadeIn 0.6s 0.4s both;">
+                    <input type="text" id="staffSearch" placeholder="Search staff by name or outlet..." 
+                           style="padding: 0.75rem; width: 100%; border-radius: 0.375rem; 
+                           border: 1px solid var(--primary-light); background: var(--primary-dark); 
+                           color: var(--gray-light); font-family: inherit;">
+                </div>
+
+
 
                 <!-- Staff Details Table -->
                 <div class="card">
@@ -407,60 +418,77 @@
         </div>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                // Mobile menu toggle
-                const mobileMenuToggle = document.createElement('button');
-                mobileMenuToggle.innerHTML = '☰';
-                mobileMenuToggle.style.position = 'fixed';
-                mobileMenuToggle.style.top = '1rem';
-                mobileMenuToggle.style.left = '1rem';
-                mobileMenuToggle.style.zIndex = '1000';
-                mobileMenuToggle.style.background = 'var(--primary)';
-                mobileMenuToggle.style.color = 'white';
-                mobileMenuToggle.style.border = 'none';
-                mobileMenuToggle.style.borderRadius = '50%';
-                mobileMenuToggle.style.width = '40px';
-                mobileMenuToggle.style.height = '40px';
+    document.addEventListener('DOMContentLoaded', function () {
+        // Mobile menu toggle
+        const mobileMenuToggle = document.createElement('button');
+        mobileMenuToggle.innerHTML = '☰';
+        mobileMenuToggle.style.position = 'fixed';
+        mobileMenuToggle.style.top = '1rem';
+        mobileMenuToggle.style.left = '1rem';
+        mobileMenuToggle.style.zIndex = '1000';
+        mobileMenuToggle.style.background = 'var(--primary)';
+        mobileMenuToggle.style.color = 'white';
+        mobileMenuToggle.style.border = 'none';
+        mobileMenuToggle.style.borderRadius = '50%';
+        mobileMenuToggle.style.width = '40px';
+        mobileMenuToggle.style.height = '40px';
+        mobileMenuToggle.style.display = 'none';
+        mobileMenuToggle.style.justifyContent = 'center';
+        mobileMenuToggle.style.alignItems = 'center';
+        mobileMenuToggle.style.cursor = 'pointer';
+
+        mobileMenuToggle.addEventListener('click', function () {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+
+        document.body.appendChild(mobileMenuToggle);
+
+        // Show mobile menu button on small screens
+        function checkScreenSize() {
+            if (window.innerWidth <= 768) {
+                mobileMenuToggle.style.display = 'flex';
+            } else {
                 mobileMenuToggle.style.display = 'none';
-                mobileMenuToggle.style.justifyContent = 'center';
-                mobileMenuToggle.style.alignItems = 'center';
-                mobileMenuToggle.style.cursor = 'pointer';
+                document.querySelector('.sidebar').classList.remove('active');
+            }
+        }
 
-                mobileMenuToggle.addEventListener('click', function () {
-                    document.querySelector('.sidebar').classList.toggle('active');
-                });
+        window.addEventListener('resize', checkScreenSize);
+        checkScreenSize();
 
-                document.body.appendChild(mobileMenuToggle);
-
-                // Show mobile menu button on small screens
-                function checkScreenSize() {
-                    if (window.innerWidth <= 768) {
-                        mobileMenuToggle.style.display = 'flex';
-                    } else {
-                        mobileMenuToggle.style.display = 'none';
-                        document.querySelector('.sidebar').classList.remove('active');
-                    }
-                }
-
-                window.addEventListener('resize', checkScreenSize);
-                checkScreenSize();
-
-                // Add hover effects to table rows
-                const tableRows = document.querySelectorAll('.data-table tr');
-                tableRows.forEach(row => {
-                    row.addEventListener('mouseenter', function () {
-                        this.style.backgroundColor = 'var(--primary-light)';
-                    });
-
-                    row.addEventListener('mouseleave', function () {
-                        if (this.rowIndex % 2 === 0) {
-                            this.style.backgroundColor = 'rgba(30, 58, 138, 0.2)';
-                        } else {
-                            this.style.backgroundColor = 'var(--primary-dark)';
-                        }
-                    });
-                });
+        // Add hover effects to table rows
+        const tableRows = document.querySelectorAll('.data-table tr');
+        tableRows.forEach(row => {
+            row.addEventListener('mouseenter', function () {
+                this.style.backgroundColor = 'var(--primary-light)';
             });
-        </script>
+
+            row.addEventListener('mouseleave', function () {
+                if (this.rowIndex % 2 === 0) {
+                    this.style.backgroundColor = 'rgba(30, 58, 138, 0.2)';
+                } else {
+                    this.style.backgroundColor = 'var(--primary-dark)';
+                }
+            });
+        });
+
+        // Live search functionality
+        document.getElementById('staffSearch').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('.data-table tbody tr');
+            
+            rows.forEach(row => {
+                const name = row.cells[1].textContent.toLowerCase(); // Name column (index 1)
+                const outlet = row.cells[3].textContent.toLowerCase(); // Outlet column (index 3)
+                
+                if (name.includes(searchTerm) || outlet.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
     </body>
 </html>
