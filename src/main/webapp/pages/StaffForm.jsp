@@ -1,10 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page session="true" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Staff Details | Head Office</title>
+        <title><c:out value="${staff == null ? 'Add New' : 'Edit'}"/> Staff | Head Office</title>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <style>
             /* Dark Blue Theme Variables */
@@ -144,70 +143,57 @@
                 font-weight: 600;
             }
 
-            /* Card Styles */
-            .card {
+            /* Form Styles */
+            .form-container {
+                max-width: 600px;
+                margin: 0 auto;
                 background: var(--primary-dark);
+                padding: 2rem;
                 border-radius: 0.5rem;
-                padding: 1.5rem;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-                transition: var(--transition);
-                position: relative;
-                overflow: hidden;
                 border: 1px solid var(--primary-light);
-                margin-bottom: 1.5rem;
                 animation: fadeIn 0.6s ease-out forwards;
             }
 
-            .card-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 1rem;
+            .form-group {
+                margin-bottom: 1.5rem;
             }
 
-            .card-title {
-                font-size: 1.25rem;
-                font-weight: 500;
+            .form-group label {
+                display: block;
+                margin-bottom: 0.5rem;
                 color: var(--light);
+                font-weight: 500;
             }
 
-            /* Table Styles */
-            .data-table {
+            .form-control {
                 width: 100%;
-                border-collapse: collapse;
-                margin-top: 1.5rem;
-                background-color: var(--primary-dark);
-                border-radius: 0.5rem;
-                overflow: hidden;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-                animation: fadeIn 0.6s 0.3s both;
-            }
-
-            .data-table th {
+                padding: 0.75rem;
+                border: 1px solid var(--primary-light);
+                border-radius: 0.375rem;
                 background-color: var(--primary);
-                color: var(--light);
-                padding: 1rem;
-                text-align: left;
-                font-weight: 500;
+                color: var(--white);
+                font-family: inherit;
+                transition: var(--transition);
             }
 
-            .data-table td {
-                padding: 1rem;
-                border-bottom: 1px solid var(--primary-light);
-                color: var(--gray-light);
+            .form-control:focus {
+                outline: none;
+                border-color: var(--secondary);
+                box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.3);
             }
 
-            .data-table tr:nth-child(even) {
-                background-color: rgba(30, 58, 138, 0.2);
+            select.form-control {
+                appearance: none;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2390a4ae' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 0.75rem center;
+                background-size: 16px 12px;
+                padding-right: 2.5rem;
             }
 
-            .data-table tr:hover {
-                background-color: var(--primary);
-            }
-
-            /* Button Styles */
             .btn {
-                padding: 0.5rem 1rem;
+                padding: 0.75rem 1.5rem;
                 border-radius: 0.375rem;
                 font-weight: 500;
                 cursor: pointer;
@@ -217,6 +203,7 @@
                 align-items: center;
                 gap: 0.5rem;
                 text-decoration: none;
+                font-size: 1rem;
             }
 
             .btn-primary {
@@ -228,48 +215,35 @@
                 background-color: #1565c0;
             }
 
-            .btn-logout {
-                background-color: rgba(244, 67, 54, 0.1);
-                color: var(--danger);
+            .btn-secondary {
+                background-color: var(--gray);
+                color: white;
             }
 
-            .btn-logout:hover {
+            .btn-secondary:hover {
+                background-color: #78909c;
+            }
+
+            .btn-danger {
                 background-color: var(--danger);
                 color: white;
             }
 
-            /* Stats Card */
-            .stats-card {
-                background-color: var(--primary-dark);
-                padding: 1.5rem;
-                border-radius: 0.5rem;
-                margin-bottom: 1.5rem;
-                animation: fadeIn 0.6s 0.2s both;
-                border-left: 4px solid var(--secondary);
+            .btn-danger:hover {
+                background-color: #d32f2f;
             }
 
-            .stats-card h3 {
-                color: var(--light);
-                margin-top: 0;
-                margin-bottom: 1rem;
-            }
-
-            .stats-value {
-                font-size: 1.75rem;
-                font-weight: 700;
-                color: var(--white);
-                margin: 0.5rem 0;
+            .action-buttons {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 2rem;
+                gap: 1rem;
             }
 
             /* Animations */
             @keyframes fadeIn {
                 from { opacity: 0; transform: translateY(20px); }
                 to { opacity: 1; transform: translateY(0); }
-            }
-
-            @keyframes pulse {
-                0%, 100% { transform: scale(1); }
-                50% { transform: scale(1.05); }
             }
 
             /* Responsive Adjustments */
@@ -288,18 +262,17 @@
                     padding: 1rem;
                 }
 
-                .data-table {
-                    display: block;
-                    overflow-x: auto;
+                .form-container {
+                    padding: 1.5rem;
+                }
+
+                .action-buttons {
+                    flex-direction: column;
                 }
             }
         </style>
     </head>
     <body>
-        <c:if test="${staff == null}">
-            <c:redirect url='/StaffServlet' />
-        </c:if>
-
         <div class="dashboard-container">
             <!-- Sidebar Navigation -->
             <aside class="sidebar">
@@ -307,7 +280,7 @@
                     <h3>Head Office Panel</h3>
                 </div>
                 <nav>
-                    <div class="sidebar-item ">
+                    <div class="sidebar-item">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp">
                             <i>🏢</i> Dashboard
                         </a>
@@ -339,7 +312,7 @@
             <main class="main-content">
                 <!-- Header -->
                 <header class="header">
-                    <h1>Staff Details</h1>
+                    <h1><c:out value="${staff == null ? 'Add New' : 'Edit'}"/> Staff Member</h1>
                     <div class="user-info">
                         <span>Welcome, Head Office Admin</span>
                         <div class="user-avatar">
@@ -348,60 +321,53 @@
                     </div>
                 </header>
 
-                <!-- Staff Count Card -->
-                <div class="stats-card">
-                    <h3>👥 Total Staff Members</h3>
-                    <div class="stats-value">${staff.size()}</div>
-                    <p>Across all outlets</p>
-                    <div class="card-header">
-                        <h2 class="card-title">All Staff Members</h2>
-                        <a href="StaffServlet?action=new" class="btn btn-primary">
-                            <i>➕</i> Add New Staff
-                        </a>
-                    </div>
-                </div>
+                <!-- Staff Form -->
+                <div class="form-container">
+                    <form action="StaffServlet" method="post">
+                        <input type="hidden" name="id" value="${staff.id}"/>
+                        <input type="hidden" name="action" value="${staff == null ? 'insert' : 'update'}"/>
 
-                <!-- Staff Details Table -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">All Staff Members</h2>
-                    </div>
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Role</th>
-                                <th>Outlet</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach items="${staff}" var="staff">
-                                <tr>
-                                    <td>${staff.id}</td>
-                                    <td>${staff.name}</td>
-                                    <td>${staff.role}</td>
-                                    <td>${staff.location}</td>
-                                    <td>
-                                        <a href="StaffServlet?action=edit&id=${staff.id}" class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.875rem;">
-                                            Edit/Delete
-                                        </a>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                </div>
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" class="form-control" id="name" name="name" 
+                                   value="${staff.name}" required>
+                        </div>
 
-                <!-- Action Buttons -->
-                <div style="margin-top: 2rem; display: flex; justify-content: space-between; animation: fadeIn 0.6s 1s both">
-                    <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp" class="btn btn-primary">
-                        <i>⬅️</i> Back to Dashboard
-                    </a>
-                    <a href="${pageContext.request.contextPath}/pages/login.jsp" class="btn btn-logout">
-                        <i>🚪</i> Logout
-                    </a>
+                        <div class="form-group">
+                            <label for="role">Role</label>
+                            <input type="text" class="form-control" id="role" name="role" 
+                                   value="${staff.role}" required>
+                        </div>
+                        <!-- fetching the drop down -->
+                        <div class="form-group">
+                            <label for="location">Outlet Location</label>
+                            <select name="location" class="form-control" required>
+                                <option value="">-- Select Location --</option>
+                                <c:forEach items="${outlets}" var="outlet">
+                                    <option value="${outlet}" ${staff.location eq outlet ? 'selected' : ''}>
+                                        ${outlet}
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <div class="action-buttons">
+                            <div style="display: flex; gap: 1rem;">
+                                <button type="submit" class="btn btn-primary">
+                                    ${staff == null ? 'Add Staff' : 'Update Staff'}
+                                </button>
+                                <a href="StaffServlet" class="btn btn-secondary">Cancel</a>
+                            </div>
+
+                            <c:if test="${staff != null}">
+                                <a href="StaffServlet?action=delete&id=${staff.id}" 
+                                   class="btn btn-danger"
+                                   onclick="return confirm('Are you sure you want to delete this staff member?')">
+                                    Delete
+                                </a>
+                            </c:if>
+                        </div>
+                    </form>
                 </div>
             </main>
         </div>
@@ -444,22 +410,6 @@
 
                 window.addEventListener('resize', checkScreenSize);
                 checkScreenSize();
-
-                // Add hover effects to table rows
-                const tableRows = document.querySelectorAll('.data-table tr');
-                tableRows.forEach(row => {
-                    row.addEventListener('mouseenter', function () {
-                        this.style.backgroundColor = 'var(--primary-light)';
-                    });
-
-                    row.addEventListener('mouseleave', function () {
-                        if (this.rowIndex % 2 === 0) {
-                            this.style.backgroundColor = 'rgba(30, 58, 138, 0.2)';
-                        } else {
-                            this.style.backgroundColor = 'var(--primary-dark)';
-                        }
-                    });
-                });
             });
         </script>
     </body>

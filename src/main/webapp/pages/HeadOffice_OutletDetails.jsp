@@ -255,6 +255,26 @@
                 font-size: 1.25rem;
             }
 
+            .btn-delete {
+                background: none;
+                border: none;
+                color: var(--danger);
+                cursor: pointer;
+                font-size: 1.1rem;
+                padding: 0.25rem 0.5rem;
+                border-radius: 0.25rem;
+                transition: var(--transition);
+            }
+
+            .btn-delete:hover {
+                background-color: rgba(244, 67, 54, 0.1);
+                transform: scale(1.1);
+            }
+
+            .data-table td:last-child {
+                text-align: center;
+            }
+
             .top-performer p {
                 margin: 0.5rem 0;
                 color: var(--gray-light);
@@ -311,8 +331,13 @@
                     <h3>Head Office Panel</h3>
                 </div>
                 <nav>
+                    <div class="sidebar-item ">
+                        <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp">
+                            <i>🏢</i> Dashboard
+                        </a>
+                    </div>
                     <div class="sidebar-item">
-                        <a href="${pageContext.request.contextPath}/pages/home.jsp">
+                        <a href="${pageContext.request.contextPath}/pages/HeadOffice_AddOutlet.jsp">
                             <i>🏢</i> Add Outlet
                         </a>
                     </div>
@@ -375,6 +400,7 @@
                                 <th>Returned Items</th>
                                 <th>Remaining Returns</th>
                                 <th>Available Items</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -386,6 +412,13 @@
                                     <td>${outlet.totalReturnedItems}</td>
                                     <td>${outlet.remainingReturnedItems}</td>
                                     <td>${outlet.availableNewItems}</td>
+                                    <td>
+                                        <a href="${pageContext.request.contextPath}/HeadOffice_OutletDetailsServlet?delete=${outlet.id}" 
+                                           class="btn btn-danger" 
+                                           onclick="return confirm('Are you sure you want to delete this outlet?')">
+                                            Delete
+                                        </a>
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -457,6 +490,32 @@
                             this.style.backgroundColor = 'var(--primary-dark)';
                         }
                     });
+                });
+            });
+
+
+
+            // Delete outlet functionality
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function () {
+                    const outletId = this.getAttribute('data-id');
+                    if (confirm('Are you sure you want to delete this outlet?')) {
+                        fetch('${pageContext.request.contextPath}/DeleteOutletServlet?id=' + outletId, {
+                            method: 'POST'
+                        })
+                                .then(response => {
+                                    if (response.ok) {
+                                        // Reload the page to see changes
+                                        window.location.reload();
+                                    } else {
+                                        alert('Failed to delete outlet');
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    alert('An error occurred while deleting the outlet');
+                                });
+                    }
                 });
             });
         </script>

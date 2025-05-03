@@ -342,7 +342,12 @@
                 </div>
                 <nav>
                     <div class="sidebar-item active">
-                        <a href="${pageContext.request.contextPath}/pages/home.jsp">
+                        <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp">
+                            <i>🏢</i> Dashboard
+                        </a>
+                    </div>
+                    <div class="sidebar-item ">
+                        <a href="${pageContext.request.contextPath}/pages/HeadOffice_AddOutlet.jsp">
                             <i>🏢</i> Add Outlet
                         </a>
                     </div>
