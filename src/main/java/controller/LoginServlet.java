@@ -34,22 +34,16 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 Admin admin = new Admin(adminName, adminLocation);
                 session.setAttribute("admin", admin);
-<<<<<<< HEAD
    
-=======
 
                 
->>>>>>> b4ac7c382da15d42d056bda309fb8b47f59b974a
                 
                  // Check if this is a head office admin
                 if ("HO".equalsIgnoreCase(adminLocation)) {
                     response.sendRedirect("pages/HeadOffice_Dashboard.jsp");
                     return;
                 }
-<<<<<<< HEAD
-=======
 
->>>>>>> b4ac7c382da15d42d056bda309fb8b47f59b974a
 
                 int trackingCount = adminService.getMatchingTrackingCount(adminLocation);
                 session.setAttribute("trackingCount", trackingCount);
