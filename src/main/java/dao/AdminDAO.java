@@ -15,6 +15,21 @@ public class AdminDAO {
             return rs.next() ? rs.getString("outlet_location") : null;
         }
     }
+    
+    
+    public boolean validateAdmin(String adminName, String password) throws SQLException {
+    String sql = "SELECT outlet_location FROM admin_register WHERE admin_name = ? AND password = ?";
+    try (Connection conn = DBHelper.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setString(1, adminName);
+        stmt.setString(2, password);
+        ResultSet rs = stmt.executeQuery();
+        return rs.next(); // Returns true if a matching record exists
+    }
+}
+
+    
+    
 
     public int getMatchingTrackingCount(String location) throws SQLException {
         String sql = "SELECT COUNT(*) AS count FROM location_tracking WHERE tracking_update = ?";
