@@ -34,8 +34,7 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 Admin admin = new Admin(adminName, adminLocation);
                 session.setAttribute("admin", admin);
-                
-                
+
                  // Check if this is a head office admin
                 if ("HO".equalsIgnoreCase(adminLocation)) {
                     response.sendRedirect("pages/HeadOffice_Dashboard.jsp");
