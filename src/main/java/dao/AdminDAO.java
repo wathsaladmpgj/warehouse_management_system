@@ -15,6 +15,21 @@ public class AdminDAO {
             return rs.next() ? rs.getString("outlet_location") : null;
         }
     }
+    
+    
+    public boolean validateAdmin(String adminName, String password) throws SQLException {
+    String sql = "SELECT outlet_location FROM admin_register WHERE admin_name = ? AND password = ?";
+    try (Connection conn = DBHelper.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setString(1, adminName);
+        stmt.setString(2, password);
+        ResultSet rs = stmt.executeQuery();
+        return rs.next(); // Returns true if a matching record exists
+    }
+}
+
+    
+    
 
     public int getMatchingTrackingCount(String location) throws SQLException {
         String sql = "SELECT COUNT(*) AS count FROM location_tracking WHERE tracking_update = ?";
@@ -81,15 +96,15 @@ public double getNewItemsTotalPrice(String warehouseLocation) throws SQLExceptio
 
 // Add to AdminDAO.java
 public double getRegisteredItemsTotalPrice(String outletLocation) throws SQLException {
-    String sql = "SELECT SUM(pp.item_price) AS total " +
-                 "FROM product_pricing pp " +
-                 "JOIN admin_register ar ON pp.admin_location = ar.outlet_location " +
-                 "WHERE ar.outlet_location = ? " +
-                 "OR pp.item_prices LIKE 'return%'";
+    String sql = "SELECT COALESCE(SUM(pp.item_price), 0) AS total " +
+                "FROM product_pricing pp " +
+                "JOIN admin_register ar ON pp.admin_location = ar.outlet_location " +
+                "WHERE ar.outlet_location = ? " +
+                "OR pp.item_price LIKE 'return%'"; // Changed item_prices to item_price
     
     try (Connection conn = DBHelper.getConnection();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
-         
+        
         stmt.setString(1, outletLocation);
         ResultSet rs = stmt.executeQuery();
         

@@ -498,8 +498,10 @@
                             <i>💳</i>
                         </div>
                     </div>
-                    <h2 class="card-value">Rs. ${String.format("%,.2f", sessionScope.registeredItemsTotalPrice)}</h2>
-                    <p class="card-label">Total registered value</p>
+                <h2 class="card-value">
+                    Rs. ${empty sessionScope.registeredItemsTotalPrice ? '0.00' : 
+                        String.format("%,.2f", sessionScope.registeredItemsTotalPrice)}
+                </h2>
                 </div>
 
                 <!-- Available Items Price Card -->
