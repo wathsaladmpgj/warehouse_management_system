@@ -506,4 +506,3 @@
     </script>
 </body>
 </html>
-```
