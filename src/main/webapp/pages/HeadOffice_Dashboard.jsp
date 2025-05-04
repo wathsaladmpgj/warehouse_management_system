@@ -356,6 +356,11 @@
                             <i>🏠</i> Dashboard
                         </a>
                     </div>
+                    <div class="sidebar-item">
+                        <a href="${pageContext.request.contextPath}/pages/chart.jsp">
+                            <i>📈</i> Analysis
+                        </a>
+                    </div>
                     <div class="sidebar-item ">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_AddOutlet.jsp">
                             <i>🏢</i> Add Outlet
