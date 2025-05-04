@@ -340,7 +340,6 @@
             animation: pulse 2s infinite;
         }
     </style>
-    
 </head>
 <body>
     <div class="dashboard-container">
@@ -371,7 +370,7 @@
                     </a>
                 </div>
                 <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/product-details.jsp">
+                    <a href="${pageContext.request.contextPath}/pages/product-list.jsp">
                         <i>📋</i> Product Details
                     </a>
                 </div>
@@ -425,7 +424,7 @@
                     <h2 class="card-value" id="newItemsCount">${trackingCount}</h2>
                     <p class="card-label">Items matching your location</p>
                     <div class="stats-highlight positive">
-                        <span>▲ 12%</span>
+                        
                     </div>
                 </div>
 
@@ -440,7 +439,7 @@
                     <h2 class="card-value" id="registeredItemsCount">${totalRegisteredItems}</h2>
                     <p class="card-label">Items at your outlet</p>
                     <div class="stats-highlight positive">
-                        <span>▲ 5%</span>
+                      
                     </div>
                 </div>
 
@@ -455,7 +454,7 @@
                     <h2 class="card-value" id="availableItemsCount">${availableItemsCount}</h2>
                     <p class="card-label">Currently in stock</p>
                     <div class="stats-highlight negative">
-                        <span>▼ 3%</span>
+                       
                     </div>
                 </div>
 
@@ -470,7 +469,7 @@
                     <h2 class="card-value" id="successItemsCount">${successItemsCount}</h2>
                     <p class="card-label">Processed successfully</p>
                     <div class="stats-highlight positive">
-                        <span>▲ 8%</span>
+                       
                     </div>
                 </div>
             </div>
