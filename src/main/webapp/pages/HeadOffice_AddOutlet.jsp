@@ -298,6 +298,7 @@
                 }
             }
         </style>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/trackingUpdate.css">
     </head>
     <body>
         <div class="dashboard-container">

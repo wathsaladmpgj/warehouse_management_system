@@ -350,17 +350,17 @@
             </div>
             <nav>
                 <div class="sidebar-item active">
-                    <a href="${pageContext.request.contextPath}/pages/home.jsp">
+                    <a href="${pageContext.request.contextPath}/pages/OutletDashBoard.jsp">
                         <i>📊</i> Dashboard
                     </a>
                 </div>
                 <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/tracking.jsp">
+                    <a href="${pageContext.request.contextPath}/pages/updateTracking.jsp">
                         <i>🔍</i> Tracking
                     </a>
                 </div>
                 <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/monthly_report.jsp">
+                    <a href="${pageContext.request.contextPath}/pages/monthlyDeliveryReport.jsp">
                         <i>📈</i> Sales Report
                     </a>
                 </div>
@@ -375,18 +375,8 @@
                     </a>
                 </div>
                 <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/item-details.jsp">
-                        <i>📦</i> Inventory
-                    </a>
-                </div>
-                <div class="sidebar-item">
                     <a href="${pageContext.request.contextPath}/pages/add-staff.jsp">
                         <i>👥</i> Add Staff
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/staff-management.jsp">
-                        <i>👔</i> Staff Management
                     </a>
                 </div>
             </nav>
