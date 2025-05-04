@@ -4,7 +4,6 @@
 <html>
 <head>
     <title>Add Product</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/OutLetDashBoard.css">
     <style>
         :root {
             --primary: #1a237e;
@@ -27,10 +26,10 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
         
         body {
-            font-family: 'Inter', sans-serif;
             background-color: var(--dark);
             color: var(--gray-light);
             line-height: 1.6;
@@ -108,17 +107,45 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
+            padding-bottom: 1rem;
             border-bottom: 1px solid var(--primary-light);
         }
         
-        .header h2 {
+        .header h1, .header h2 {
             font-size: 1.75rem;
             font-weight: 600;
             color: var(--light);
             display: flex;
             align-items: center;
             gap: 0.75rem;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .branch-info {
+            margin-bottom: 1.5rem;
+            padding: 0.5rem 1rem;
+            background-color: var(--primary-dark);
+            border-radius: 0.375rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
         /* Form Styles */
@@ -259,6 +286,12 @@
                 margin-left: 0;
                 padding: 1.5rem;
             }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
         }
     </style>
 </head>
@@ -275,28 +308,41 @@
                 <a href="${pageContext.request.contextPath}/pages/tracking.jsp">🔍 Tracking</a>
             </div>
             <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/addProduct.jsp">📈 Sales Report</a>
+                <a href="${pageContext.request.contextPath}/pages/monthly_report.jsp">📈 Sales Report</a>
             </div>
             <div class="sidebar-item active">
                 <a href="${pageContext.request.contextPath}/pages/addProduct.jsp">➕ Add Product</a>
             </div>
             <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/addProduct.jsp">📋 Product Details</a>
+                <a href="${pageContext.request.contextPath}/pages/product-details.jsp">📋 Product Details</a>
             </div>
             <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/addProduct.jsp">📦 Inventory</a>
+                <a href="${pageContext.request.contextPath}/pages/item-details.jsp">📦 Inventory</a>
             </div>
             <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/addProduct.jsp">👥 Add Staff</a>
+                <a href="${pageContext.request.contextPath}/pages/add-staff.jsp">👥 Add Staff</a>
             </div>
             <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/addProduct.jsp">👔 Staff Management</a>
+                <a href="${pageContext.request.contextPath}/pages/staff-management.jsp">👔 Staff Management</a>
             </div>
         </div>
         <div class="main-content">
-            <div class="header">
-                <h2>🏢 ${sessionScope.admin.outletLocation}</h2>
+            <header class="header">
+                <h1>Dashboard Overview</h1>
+                <div class="user-info">
+                    <span>Welcome, ${sessionScope.admin.adminName}</span>
+                    <div class="user-avatar">
+                        ${sessionScope.admin.adminName.charAt(0)}
+                    </div>
+                </div>
+            </header>
+
+            <!-- Branch Information -->
+            <div class="branch-info">
+                <i>🏢</i>
+                <span>Branch: <strong>${sessionScope.admin.outletLocation}</strong></span>
             </div>
+            
             <div class="content-area">
                 <h2>➕ Add New Product</h2>
                 
@@ -319,7 +365,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="receiveLocation">📍 Receive Location:</label>
+                        <label for="receiverLocation">📍 Receive Location:</label>
                         <input type="text" id="receiverLocation" name="receiverLocation" required>
                     </div>
                     
