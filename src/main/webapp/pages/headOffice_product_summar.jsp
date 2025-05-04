@@ -309,33 +309,38 @@
             <div class="sidebar-header">
                 <h3>Head Office Panel</h3>
             </div>
-            <nav>
-                <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp">
-                        <i>🏠</i> Dashboard
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/HeadOffice_AddOutlet.jsp">
-                        <i>🏢</i> Add Outlet
-                    </a>
-                </div>
-                <div class="sidebar-item active">
-                    <a href="${pageContext.request.contextPath}/pages/headOffice_product_summar.jsp">
-                        <i>📊</i> View Report
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/HeadOffice_OutletDetails.jsp">
-                        <i>🏬</i> Outlet Details
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/HeadOffice_StaffDetails.jsp">
-                        <i>👥</i> Staff Details
-                    </a>
-                </div>
-            </nav>
+                <nav>
+                    <div class="sidebar-item">
+                        <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp">
+                            <i>🏠</i> Dashboard
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="${pageContext.request.contextPath}/pages/chart.jsp">
+                            <i>📈</i> Analysis
+                        </a>
+                    </div>
+                    <div class="sidebar-item ">
+                        <a href="${pageContext.request.contextPath}/pages/HeadOffice_AddOutlet.jsp">
+                            <i>🏢</i> Add Outlet
+                        </a>
+                    </div>
+                    <div class="sidebar-item active">
+                        <a href="${pageContext.request.contextPath}/pages/headOffice_product_summar.jsp">
+                            <i>📊</i> View Report
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="${pageContext.request.contextPath}/pages/HeadOffice_OutletDetails.jsp">
+                            <i>🏬</i> Outlet Details
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="${pageContext.request.contextPath}/pages/HeadOffice_StaffDetails.jsp">
+                            <i>👥</i> Staff Details
+                        </a>
+                    </div>
+                </nav>
         </aside>
                   
         <!-- Main Content Area -->
