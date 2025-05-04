@@ -144,10 +144,10 @@
                 font-weight: 600;
             }
 
-            /* Dashboard Grid */
+            /* Dashboard Grid - FIXED */
             .dashboard-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                grid-template-columns: repeat(3, 1fr);
                 gap: 1.5rem;
                 margin-bottom: 2rem;
             }
@@ -162,6 +162,9 @@
                 position: relative;
                 overflow: hidden;
                 border: 1px solid var(--primary-light);
+                display: flex;
+                flex-direction: column;
+                height: 100%;
             }
 
             .card:hover {
@@ -214,6 +217,7 @@
             .card-label {
                 font-size: 0.875rem;
                 color: var(--gray);
+                margin-top: auto;
             }
 
             .price-card .card-value {
@@ -269,6 +273,12 @@
             }
 
             /* Responsive Adjustments */
+            @media (max-width: 1024px) {
+                .dashboard-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+            }
+
             @media (max-width: 768px) {
                 .sidebar {
                     transform: translateX(-100%);
@@ -382,7 +392,7 @@
                     </div>
                 </header>
 
-                <!-- Dashboard Stats Grid -->
+                <!-- First Row of Cards -->
                 <div class="dashboard-grid">
                     <!-- Total Registered Items Card -->
                     <div class="card" style="animation-delay: 0.1s">
@@ -392,11 +402,8 @@
                                 <i>📝</i>
                             </div>
                         </div>
-                        <h2 class="dynamic-count" id="registeredItemsCount">${getRowCountTotalRegisteredItems}</h2>
+                        <h2 class="" id="registeredItemsCount">${getRowCountTotalRegisteredItems}</h2>
                         <p class="card-label">Items registered across all outlets</p>
-                        <div class="stats-highlight positive">
-                            <span>▲ 12%</span>
-                        </div>
                     </div>
 
                     <!-- Total Returned Items Card -->
@@ -408,10 +415,7 @@
                             </div>
                         </div>
                         <h2 class="card-value" id="returnedItemsCount">${getTotalReturnedItems}</h2>
-                        <p class="card-label">Items returned to head office</p>
-                        <div class="stats-highlight positive">
-                            <span>▲ 5%</span>
-                        </div>
+                        <p class="card-label">returned items across outlets</p>
                     </div>
 
                     <!-- Remaining Returned Items Card -->
@@ -423,12 +427,12 @@
                             </div>
                         </div>
                         <h2 class="card-value" id="remainingReturnedItems">${remaining_returned_items}</h2>
-                        <p class="card-label">Items pending processing</p>
-                        <div class="stats-highlight negative">
-                            <span>▼ 3%</span>
-                        </div>
+                        <p class="card-label">Remaining Returned Items across outlets</p>
                     </div>
+                </div>
 
+                <!-- Second Row of Cards -->
+                <div class="dashboard-grid">
                     <!-- Available New Items Card -->
                     <div class="card" style="animation-delay: 0.4s">
                         <div class="card-header">
@@ -438,15 +442,9 @@
                             </div>
                         </div>
                         <h2 class="card-value" id="availableNewItems">${available_new_items}</h2>
-                        <p class="card-label">New items in inventory</p>
-                        <div class="stats-highlight positive">
-                            <span>▲ 8%</span>
-                        </div>
+                        <p class="card-label">Available New Items across outlets</p>
                     </div>
-                </div>
 
-                <!-- Second Row of Cards -->
-                <div class="dashboard-grid">
                     <!-- Total Staff Count Card -->
                     <div class="card" style="animation-delay: 0.5s">
                         <div class="card-header">
@@ -457,9 +455,6 @@
                         </div>
                         <h2 class="card-value" id="staffCount">${getStaffCount}</h2>
                         <p class="card-label">Staff members across outlets</p>
-                        <div class="stats-highlight positive">
-                            <span>▲ 4%</span>
-                        </div>
                     </div>
 
                     <!-- Outlet Count Card -->
@@ -472,33 +467,6 @@
                         </div>
                         <h2 class="card-value" id="outletCount">${getOutletCount}</h2>
                         <p class="card-label">Active outlets in system</p>
-                        <div class="stats-highlight positive">
-                            <span>▲ 2%</span>
-                        </div>
-                    </div>
-
-                    <!-- Placeholder Card 1 -->
-                    <div class="card" style="animation-delay: 0.7s">
-                        <div class="card-header">
-                            <h3 class="card-title">System Status</h3>
-                            <div class="card-icon">
-                                <i>✅</i>
-                            </div>
-                        </div>
-                        <h2 class="card-value">Operational</h2>
-                        <p class="card-label">All systems normal</p>
-                    </div>
-
-                    <!-- Placeholder Card 2 -->
-                    <div class="card" style="animation-delay: 0.8s">
-                        <div class="card-header">
-                            <h3 class="card-title">Recent Activity</h3>
-                            <div class="card-icon">
-                                <i>🔄</i>
-                            </div>
-                        </div>
-                        <h2 class="card-value">24</h2>
-                        <p class="card-label">Updates today</p>
                     </div>
                 </div>
 

@@ -307,7 +307,7 @@
                     <h3>Head Office Panel</h3>
                 </div>
                 <nav>
-                     <div class="sidebar-item ">
+                    <div class="sidebar-item ">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp">
                             <i>🏠</i> Dashboard
                         </a>
@@ -380,6 +380,16 @@
                     </form>
                 </div>
             </main>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="margin-top: 2rem; margin-left: 16rem; display: flex; justify-content: space-between; animation: fadeIn 0.6s 1s both">
+            <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp" class="btn btn-primary">
+                <i>⬅️</i> Back to Dashboard
+            </a>
+            <a href="${pageContext.request.contextPath}/pages/login.jsp" class="btn btn-logout">
+                <i>🚪</i> Logout
+            </a>
         </div>
 
         <script>
