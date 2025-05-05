@@ -294,6 +294,7 @@
                 }
             }
         </style>
+        <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/trackingUpdate.css">
     </head>
     <body>
         <c:if test="${staff == null}">
@@ -307,12 +308,17 @@
                     <h3>Head Office Panel</h3>
                 </div>
                 <nav>
-                    <div class="sidebar-item ">
+                    <div class="sidebar-item">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp">
                             <i>🏠</i> Dashboard
                         </a>
                     </div>
                     <div class="sidebar-item">
+                        <a href="${pageContext.request.contextPath}/pages/chart.jsp">
+                            <i>📈</i> Analysis
+                        </a>
+                    </div>
+                    <div class="sidebar-item ">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_AddOutlet.jsp">
                             <i>🏢</i> Add Outlet
                         </a>

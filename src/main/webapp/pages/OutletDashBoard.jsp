@@ -350,17 +350,17 @@
             </div>
             <nav>
                 <div class="sidebar-item active">
-                    <a href="${pageContext.request.contextPath}/pages/home.jsp">
+                    <a href="${pageContext.request.contextPath}/pages/OutletDashBoard.jsp">
                         <i>📊</i> Dashboard
                     </a>
                 </div>
                 <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/tracking.jsp">
+                    <a href="${pageContext.request.contextPath}/pages/updateTracking.jsp">
                         <i>🔍</i> Tracking
                     </a>
                 </div>
                 <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/monthly_report.jsp">
+                    <a href="${pageContext.request.contextPath}/pages/monthlyDeliveryReport.jsp">
                         <i>📈</i> Sales Report
                     </a>
                 </div>
@@ -370,7 +370,7 @@
                     </a>
                 </div>
                 <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/product-details.jsp">
+                    <a href="${pageContext.request.contextPath}/pages/product-list.jsp">
                         <i>📋</i> Product Details
                     </a>
                 </div>
@@ -380,13 +380,9 @@
                     </a>
                 </div>
                 <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/add-staff.jsp">
+                    <a href="${pageContext.request.contextPath}/pages/StaffFormOutlet.jsp">
+
                         <i>👥</i> Add Staff
-                    </a>
-                </div>
-                <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/staff-management.jsp">
-                        <i>👔</i> Staff Management
                     </a>
                 </div>
             </nav>
@@ -424,7 +420,7 @@
                     <h2 class="card-value" id="newItemsCount">${trackingCount}</h2>
                     <p class="card-label">Items matching your location</p>
                     <div class="stats-highlight positive">
-                        <span>▲ 12%</span>
+                        
                     </div>
                 </div>
 
@@ -439,7 +435,7 @@
                     <h2 class="card-value" id="registeredItemsCount">${totalRegisteredItems}</h2>
                     <p class="card-label">Items at your outlet</p>
                     <div class="stats-highlight positive">
-                        <span>▲ 5%</span>
+                      
                     </div>
                 </div>
 
@@ -454,7 +450,7 @@
                     <h2 class="card-value" id="availableItemsCount">${availableItemsCount}</h2>
                     <p class="card-label">Currently in stock</p>
                     <div class="stats-highlight negative">
-                        <span>▼ 3%</span>
+                       
                     </div>
                 </div>
 
@@ -469,7 +465,7 @@
                     <h2 class="card-value" id="successItemsCount">${successItemsCount}</h2>
                     <p class="card-label">Processed successfully</p>
                     <div class="stats-highlight positive">
-                        <span>▲ 8%</span>
+                       
                     </div>
                 </div>
             </div>
