@@ -473,17 +473,30 @@
         }
         
         /* Chart Container */
-        .chart-container {
-            background: var(--primary-dark);
-            border: 1px solid var(--primary-light);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            animation: fadeIn 0.6s 0.6s both;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
-            height: 400px;
-        }
+            .chart-container {
+                background: var(--primary-dark);
+                border: 1px solid var(--primary-light);
+                border-radius: 0.5rem;
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+                animation: fadeIn 0.6s 0.6s both;
+                transition: var(--transition);
+                box-shadow: var(--shadow);
+                height: 400px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .chart-container:before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 4px;
+                height: 100%;
+                background: var(--accent);
+                border-radius: 0.5rem 0 0 0.5rem;
+            }
         
         .chart-container:hover {
             box-shadow: var(--shadow-hover);
@@ -816,6 +829,9 @@
                         <button type="button" class="btn export-btn" id="exportExcelBtn">
                             <i>📊</i> Export Excel
                         </button>
+                         <button type="button" class="btn btn-primary" id="jumpToChartsBtn" onclick="jumpToCharts()">
+                              <i>📊</i> View Charts
+                        </button>
                     </div>
                 </form>
             </div>
@@ -976,9 +992,16 @@
                     </div>
                 </div>
             </div>
-
+                        
+                <div class="chart-reminder" style="margin-bottom: 1.5rem; background: var(--primary); padding: 1rem; border-radius: 0.5rem; border-left: 4px solid var(--accent); display: flex; align-items: center; gap: 1rem;">
+                    <div style="font-size: 1.5rem;">📊</div>
+                    <div>
+                        <h3 style="margin: 0; color: var(--light);">Charts & Visualizations</h3>
+                        <p style="margin: 0.25rem 0 0 0; color: var(--gray-light);">Visual representation of your monthly delivery performance</p>
+                    </div>
+                </div>
             <!-- Chart Sections -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div id="chartsSection" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
                 <!-- Delivery Trends Chart -->
                 <div class="chart-container">
                     <h3><i>📈</i> Delivery Trends</h3>
@@ -997,11 +1020,30 @@
                 <h3><i>🚀</i> Monthly Growth Rate</h3>
                 <canvas id="growthChart"></canvas>
             </div>
+               <!-- Return to Top Button -->
+            <div style="text-align: center; margin: 2rem 0;">
+                <button class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <i>⬆️</i> Return to Top
+                </button>
+            </div>
         </main>
-    </div>
+    </div>>
 
 <%-- Fix for the submitForm function being in the wrong scope --%>
 <script>
+    
+    function jumpToCharts() {
+    const chartsSection = document.getElementById('chartsSection');
+    if (chartsSection) {
+        chartsSection.scrollIntoView({ behavior: 'smooth' });
+        
+        // Add a brief highlight effect
+        chartsSection.style.animation = 'none';
+        setTimeout(() => {
+            chartsSection.style.animation = 'pulse 1s ease-in-out';
+        }, 10);
+    }
+}
     // Move submitForm to global scope so it can be called from the onchange attribute
     function submitForm() {
         // Submit the form when the year selection changes
