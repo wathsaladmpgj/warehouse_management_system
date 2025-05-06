@@ -473,17 +473,30 @@
         }
         
         /* Chart Container */
-        .chart-container {
-            background: var(--primary-dark);
-            border: 1px solid var(--primary-light);
-            border-radius: 0.5rem;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            animation: fadeIn 0.6s 0.6s both;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
-            height: 400px;
-        }
+            .chart-container {
+                background: var(--primary-dark);
+                border: 1px solid var(--primary-light);
+                border-radius: 0.5rem;
+                padding: 1.5rem;
+                margin-bottom: 2rem;
+                animation: fadeIn 0.6s 0.6s both;
+                transition: var(--transition);
+                box-shadow: var(--shadow);
+                height: 400px;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .chart-container:before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 4px;
+                height: 100%;
+                background: var(--accent);
+                border-radius: 0.5rem 0 0 0.5rem;
+            }
         
         .chart-container:hover {
             box-shadow: var(--shadow-hover);
@@ -816,6 +829,9 @@
                         <button type="button" class="btn export-btn" id="exportExcelBtn">
                             <i>📊</i> Export Excel
                         </button>
+                         <button type="button" class="btn btn-primary" id="jumpToChartsBtn" onclick="jumpToCharts()">
+                              <i>📊</i> View Charts
+                        </button>
                     </div>
                 </form>
             </div>
@@ -976,9 +992,16 @@
                     </div>
                 </div>
             </div>
-
+                        
+                <div class="chart-reminder" style="margin-bottom: 1.5rem; background: var(--primary); padding: 1rem; border-radius: 0.5rem; border-left: 4px solid var(--accent); display: flex; align-items: center; gap: 1rem;">
+                    <div style="font-size: 1.5rem;">📊</div>
+                    <div>
+                        <h3 style="margin: 0; color: var(--light);">Charts & Visualizations</h3>
+                        <p style="margin: 0.25rem 0 0 0; color: var(--gray-light);">Visual representation of your monthly delivery performance</p>
+                    </div>
+                </div>
             <!-- Chart Sections -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div id="chartsSection" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
                 <!-- Delivery Trends Chart -->
                 <div class="chart-container">
                     <h3><i>📈</i> Delivery Trends</h3>
@@ -997,345 +1020,367 @@
                 <h3><i>🚀</i> Monthly Growth Rate</h3>
                 <canvas id="growthChart"></canvas>
             </div>
+               <!-- Return to Top Button -->
+            <div style="text-align: center; margin: 2rem 0;">
+                <button class="btn btn-primary" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                    <i>⬆️</i> Return to Top
+                </button>
+            </div>
         </main>
-    </div>
+    </div>>
 
-    <script>
+<%-- Fix for the submitForm function being in the wrong scope --%>
+<script>
+    
+    function jumpToCharts() {
+    const chartsSection = document.getElementById('chartsSection');
+    if (chartsSection) {
+        chartsSection.scrollIntoView({ behavior: 'smooth' });
         
-                        document.getElementById('exportExcelBtn').addEventListener('click', function() {
-                      // Create a temporary anchor element
-                      const link = document.createElement('a');
+        // Add a brief highlight effect
+        chartsSection.style.animation = 'none';
+        setTimeout(() => {
+            chartsSection.style.animation = 'pulse 1s ease-in-out';
+        }, 10);
+    }
+}
+    // Move submitForm to global scope so it can be called from the onchange attribute
+    function submitForm() {
+        // Submit the form when the year selection changes
+        document.getElementById('yearForm').submit();
+    }
 
-                      // Get the selected year and outlet location from the page
-                      const selectedYear = <%= selectedYear %>;
-                      const outletLocation = "<%= outletLocation.replace("\"", "\\\"") %>";
-
-                      // Set file name - replace spaces with underscores
-                      const fileName = "Monthly_Delivery_Report_" + selectedYear + "_" + outletLocation.replace(/\s+/g, '_') + ".csv";
-
-                      // Get table data
-                      const table = document.getElementById('monthlyReportTable');
-                      let csvContent = "data:text/csv;charset=utf-8,";
-
-                      // Get headers
-                      const headers = [];
-                      const headerCells = table.querySelectorAll('thead th');
-                      headerCells.forEach(cell => {
-                          // Remove icons from header text - simplified regex for broader browser support
-                          const text = cell.textContent.replace(/[^\x00-\x7F]/g, '').trim();
-                          headers.push('"' + text + '"');
-                      });
-                      csvContent += headers.join(",") + "\r\n";
-
-                      // Get rows
-                      const rows = table.querySelectorAll('tbody tr');
-                      rows.forEach(row => {
-                          const rowData = [];
-                          const cells = row.querySelectorAll('td');
-
-                          cells.forEach(cell => {
-                              // Clean up text content (remove special characters, trim whitespace)
-                              let text = cell.textContent.replace(/[^\x00-\x7F]/g, '');
-                              // For revenue columns, remove "LKR " prefix
-                              text = text.replace('LKR ', '');
-                              text = text.trim();
-                              rowData.push('"' + text + '"');
-                          });
-
-                          csvContent += rowData.join(",") + "\r\n";
-                      });
-
-                      // Add summary data
-                      const totalDeliveriesValue = <%= totalDeliveries %>;
-                      const totalRevenueValue = "<%= String.format("%,.2f", totalRevenue).replace(",", "") %>";
-                      const growthRateValue = "<%= String.format("%.1f", deliveryGrowthRate) %>";
-                      const avgDeliveriesValue = "<%= String.format("%.0f", avgDeliveries) %>";
-                      const avgRevenueValue = "<%= String.format("%,.2f", avgRevenue).replace(",", "") %>";
-
-                      csvContent += '"Summary","","","","",""\r\n';
-                      csvContent += '"Total Deliveries","' + totalDeliveriesValue + '","","","",""\r\n';
-                      csvContent += '"Total Revenue","' + totalRevenueValue + '","","","",""\r\n';
-                      csvContent += '"Average Growth Rate","' + growthRateValue + '%","","","",""\r\n';
-                      csvContent += '"Monthly Average Deliveries","' + avgDeliveriesValue + '","","","",""\r\n';
-                      csvContent += '"Monthly Average Revenue","' + avgRevenueValue + '","","","",""\r\n';
-
-                      // Encode the CSV data to handle special characters
-                      const encodedUri = encodeURI(csvContent);
-                      link.setAttribute("href", encodedUri);
-                      link.setAttribute("download", fileName);
-                      document.body.appendChild(link);
-
-                      // Trigger download
-                      link.click();
-
-                      // Clean up
-                      document.body.removeChild(link);
-                  });
+    document.addEventListener('DOMContentLoaded', function() {
+        // Chart color palette
+        const colors = {
+            primary: '#303f9f',
+            secondary: '#1976d2',
+            accent: '#ff9800',
+            success: '#4caf50',
+            danger: '#f44336',
+            light: '#e3f2fd',
+            gray: '#90a4ae'
+        };
         
-        // Chart.js configuration
-        document.addEventListener('DOMContentLoaded', function() {
-            // Chart color palette
-            const colors = {
-                primary: '#303f9f',
-                secondary: '#1976d2',
-                accent: '#ff9800',
-                success: '#4caf50',
-                danger: '#f44336',
-                light: '#e3f2fd',
-                gray: '#90a4ae'
-            };
-            
-            // Common chart options
-            const chartOptions = {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                        labels: {
-                            color: colors.light,
-                            font: {
-                                family: "'Inter', sans-serif",
-                                size: 12
-                            }
-                        }
-                    },
-                    tooltip: {
-                        backgroundColor: 'rgba(26, 35, 126, 0.8)',
-                        titleFont: {
+        // Common chart options
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: colors.light,
+                        font: {
                             family: "'Inter', sans-serif",
-                            size: 14
-                        },
-                        bodyFont: {
-                            family: "'Inter', sans-serif",
-                            size: 13
-                        },
-                        padding: 10,
-                        cornerRadius: 4
+                            size: 12
+                        }
                     }
                 },
-                scales: {
-                    x: {
-                        grid: {
-                            color: 'rgba(144, 164, 174, 0.1)'
-                        },
-                        ticks: {
-                            color: colors.gray
-                        }
+                tooltip: {
+                    backgroundColor: 'rgba(26, 35, 126, 0.8)',
+                    titleFont: {
+                        family: "'Inter', sans-serif",
+                        size: 14
                     },
-                    y: {
-                        grid: {
-                            color: 'rgba(144, 164, 174, 0.1)'
-                        },
-                        ticks: {
-                            color: colors.gray
-                        }
-                    }
-                }
-            };
-            
-            // Fix month order - Convert month names to proper order
-            const months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
-            
-            // Get data and sort by month order
-            const rawLabels = <%= monthLabels.toString() %>;
-            const rawDeliveryData = <%= deliveryData.toString() %>;
-            const rawRevenueData = <%= revenueData.toString() %>;
-            const rawGrowthData = <%= growthData.toString() %>;
-            
-            // Create data object for sorting
-            let dataArray = [];
-            for (let i = 0; i < rawLabels.length; i++) {
-                dataArray.push({
-                    month: rawLabels[i],
-                    monthIndex: months.indexOf(rawLabels[i].toUpperCase()),
-                    deliveries: rawDeliveryData[i],
-                    revenue: rawRevenueData[i],
-                    growth: rawGrowthData[i] || 0
-                });
-            }
-            
-            // Sort by month index
-            dataArray.sort((a, b) => a.monthIndex - b.monthIndex);
-            
-            // Extract sorted data
-            const sortedLabels = dataArray.map(item => item.month);
-            const sortedDeliveryData = dataArray.map(item => item.deliveries);
-            const sortedRevenueData = dataArray.map(item => item.revenue);
-            const sortedGrowthData = dataArray.map(item => item.growth);
-            
-            // Delivery chart
-            const deliveryCtx = document.getElementById('deliveryChart').getContext('2d');
-            const deliveryChart = new Chart(deliveryCtx, {
-                type: 'line',
-                data: {
-                    labels: sortedLabels,
-                    datasets: [{
-                        label: 'Total Deliveries',
-                        data: sortedDeliveryData,
-                        backgroundColor: 'rgba(25, 118, 210, 0.2)',
-                        borderColor: colors.secondary,
-                        borderWidth: 2,
-                        tension: 0.3,
-                        pointBackgroundColor: colors.secondary,
-                        pointBorderColor: '#fff',
-                        pointRadius: 4,
-                        pointHoverRadius: 6,
-                        fill: true
-                    }]
-                },
-                options: {
-                    ...chartOptions,
-                    scales: {
-                        ...chartOptions.scales,
-                        y: {
-                            ...chartOptions.scales.y,
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Number of Deliveries',
-                                color: colors.gray
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Revenue chart
-            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
-            const revenueChart = new Chart(revenueCtx, {
-                type: 'bar',
-                data: {
-                    labels: sortedLabels,
-                    datasets: [{
-                        label: 'Revenue (LKR)',
-                        data: sortedRevenueData,
-                        backgroundColor: 'rgba(76, 175, 80, 0.4)',
-                        borderColor: colors.success,
-                        borderWidth: 1,
-                        barPercentage: 0.7,
-                        categoryPercentage: 0.8
-                    }]
-                },
-                options: {
-                    ...chartOptions,
-                    scales: {
-                        ...chartOptions.scales,
-                        y: {
-                            ...chartOptions.scales.y,
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Revenue (LKR)',
-                                color: colors.gray
-                            },
-                            ticks: {
-                                callback: function(value) {
-                                    return 'LKR ' + value.toLocaleString();
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-            
-            // Growth chart
-            const growthCtx = document.getElementById('growthChart').getContext('2d');
-            const growthChart = new Chart(growthCtx, {
-                type: 'line',
-                data: {
-                    labels: sortedLabels,
-                    datasets: [{
-                        label: 'Growth Rate (%)',
-                        data: sortedGrowthData,
-                        backgroundColor: 'rgba(255, 152, 0, 0.2)',
-                        borderColor: colors.accent,
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: colors.accent,
-                        pointBorderColor: '#fff',
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }]
-                },
-                options: {
-                    ...chartOptions,
-                    scales: {
-                        ...chartOptions.scales,
-                        y: {
-                            ...chartOptions.scales.y,
-                            title: {
-                                display: true,
-                                text: 'Growth Rate (%)',
-                                color: colors.gray
-                            },
-                            ticks: {
-                                callback: function(value) {
-                                    return value + '%';
-                                }
-                            }
-                        }
+                    bodyFont: {
+                        family: "'Inter', sans-serif",
+                        size: 13
                     },
-                    plugins: {
-                        ...chartOptions.plugins,
-                        tooltip: {
-                            ...chartOptions.plugins.tooltip,
-                            callbacks: {
-                                label: function(context) {
-                                    return context.parsed.y.toFixed(1) + '%';
-                                }
-                            }
-                        }
+                    padding: 10,
+                    cornerRadius: 4
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: 'rgba(144, 164, 174, 0.1)'
+                    },
+                    ticks: {
+                        color: colors.gray
+                    }
+                },
+                y: {
+                    grid: {
+                        color: 'rgba(144, 164, 174, 0.1)'
+                    },
+                    ticks: {
+                        color: colors.gray
                     }
                 }
-            });
-            
-            // Counter animation for summary cards
-            function animateCounter(elementId, endValue, prefix = '', suffix = '', duration = 1500) {
-                const element = document.getElementById(elementId);
-                if (!element) return;
-                
-                const startValue = 0;
-                const increment = endValue / (duration / 16);
-                let currentValue = startValue;
-                
-                const formatValue = (value) => {
-                    if (typeof value === 'number') {
-                        return value.toLocaleString('en-US', {
-                            maximumFractionDigits: 2
-                        });
-                    }
-                    return value;
-                };
-                
-                const updateCounter = () => {
-                    currentValue += increment;
-                    if (currentValue >= endValue) {
-                        element.textContent = prefix + formatValue(endValue) + suffix;
-                        return;
-                    }
-                    
-                    element.textContent = prefix + formatValue(Math.floor(currentValue)) + suffix;
-                    requestAnimationFrame(updateCounter);
-                };
-                
-                updateCounter();
             }
-            
-            // Animate counters
-            animateCounter('totalDeliveriesCounter', <%= totalDeliveries %>);
-            // For revenue, we don't animate due to formatting requirements
-                });
-                // Print Report Button functionality
-        document.getElementById('printReportBtn').addEventListener('click', function() {
-            // Trigger the browser's print dialog
-            window.print();
-                    function submitForm() {
-            // Submit the form when the year selection changes
-            document.getElementById('yearForm').submit();
+        };
+        
+        // Fix month order - Convert month names to proper order
+        const months = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"];
+        
+        // Get data and sort by month order
+        const rawLabels = <%= monthLabels.toString() %>;
+        const rawDeliveryData = <%= deliveryData.toString() %>;
+        const rawRevenueData = <%= revenueData.toString() %>;
+        const rawGrowthData = <%= growthData.toString() %>;
+        
+        // Create data object for sorting
+        let dataArray = [];
+        for (let i = 0; i < rawLabels.length; i++) {
+            dataArray.push({
+                month: rawLabels[i],
+                monthIndex: months.indexOf(rawLabels[i].toUpperCase()),
+                deliveries: rawDeliveryData[i],
+                revenue: rawRevenueData[i],
+                growth: rawGrowthData[i] || 0
+            });
         }
+        
+        // Sort by month index
+        dataArray.sort((a, b) => a.monthIndex - b.monthIndex);
+        
+        // Extract sorted data
+        const sortedLabels = dataArray.map(item => item.month);
+        const sortedDeliveryData = dataArray.map(item => item.deliveries);
+        const sortedRevenueData = dataArray.map(item => item.revenue);
+        const sortedGrowthData = dataArray.map(item => item.growth);
+        
+        // Delivery chart
+        const deliveryCtx = document.getElementById('deliveryChart').getContext('2d');
+        const deliveryChart = new Chart(deliveryCtx, {
+            type: 'line',
+            data: {
+                labels: sortedLabels,
+                datasets: [{
+                    label: 'Total Deliveries',
+                    data: sortedDeliveryData,
+                    backgroundColor: 'rgba(25, 118, 210, 0.2)',
+                    borderColor: colors.secondary,
+                    borderWidth: 2,
+                    tension: 0.3,
+                    pointBackgroundColor: colors.secondary,
+                    pointBorderColor: '#fff',
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    fill: true
+                }]
+            },
+            options: {
+                ...chartOptions,
+                scales: {
+                    ...chartOptions.scales,
+                    y: {
+                        ...chartOptions.scales.y,
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Number of Deliveries',
+                            color: colors.gray
+                        }
+                    }
+                }
+            }
         });
-    </script>
+        
+        // Revenue chart
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(revenueCtx, {
+            type: 'bar',
+            data: {
+                labels: sortedLabels,
+                datasets: [{
+                    label: 'Revenue (LKR)',
+                    data: sortedRevenueData,
+                    backgroundColor: 'rgba(76, 175, 80, 0.4)',
+                    borderColor: colors.success,
+                    borderWidth: 1,
+                    barPercentage: 0.7,
+                    categoryPercentage: 0.8
+                }]
+            },
+            options: {
+                ...chartOptions,
+                scales: {
+                    ...chartOptions.scales,
+                    y: {
+                        ...chartOptions.scales.y,
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Revenue (LKR)',
+                            color: colors.gray
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return 'LKR ' + value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Growth chart
+        const growthCtx = document.getElementById('growthChart').getContext('2d');
+        const growthChart = new Chart(growthCtx, {
+            type: 'line',
+            data: {
+                labels: sortedLabels,
+                datasets: [{
+                    label: 'Growth Rate (%)',
+                    data: sortedGrowthData,
+                    backgroundColor: 'rgba(255, 152, 0, 0.2)',
+                    borderColor: colors.accent,
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointBackgroundColor: colors.accent,
+                    pointBorderColor: '#fff',
+                    pointRadius: 4,
+                    pointHoverRadius: 6
+                }]
+            },
+            options: {
+                ...chartOptions,
+                scales: {
+                    ...chartOptions.scales,
+                    y: {
+                        ...chartOptions.scales.y,
+                        title: {
+                            display: true,
+                            text: 'Growth Rate (%)',
+                            color: colors.gray
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    ...chartOptions.plugins,
+                    tooltip: {
+                        ...chartOptions.plugins.tooltip,
+                        callbacks: {
+                            label: function(context) {
+                                return context.parsed.y.toFixed(1) + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Counter animation for summary cards
+        function animateCounter(elementId, endValue, prefix = '', suffix = '', duration = 1500) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            const startValue = 0;
+            const increment = endValue / (duration / 16);
+            let currentValue = startValue;
+            
+            const formatValue = (value) => {
+                if (typeof value === 'number') {
+                    return value.toLocaleString('en-US', {
+                        maximumFractionDigits: 2
+                    });
+                }
+                return value;
+            };
+            
+            const updateCounter = () => {
+                currentValue += increment;
+                if (currentValue >= endValue) {
+                    element.textContent = prefix + formatValue(endValue) + suffix;
+                    return;
+                }
+                
+                element.textContent = prefix + formatValue(Math.floor(currentValue)) + suffix;
+                requestAnimationFrame(updateCounter);
+            };
+            
+            updateCounter();
+        }
+        
+        // Animate counters
+        animateCounter('totalDeliveriesCounter', <%= totalDeliveries %>);
+        // For revenue, we don't animate due to formatting requirements
+    });
+
+    // Print Report Button functionality - moved outside DOMContentLoaded
+    document.getElementById('printReportBtn').addEventListener('click', function() {
+        // Trigger the browser's print dialog
+        window.print();
+    });
+
+    // Export Excel Button functionality
+    document.getElementById('exportExcelBtn').addEventListener('click', function() {
+        // Create a temporary anchor element
+        const link = document.createElement('a');
+
+        // Get the selected year and outlet location from the page
+        const selectedYear = <%= selectedYear %>;
+        const outletLocation = "<%= outletLocation.replace("\"", "\\\"") %>";
+
+        // Set file name - replace spaces with underscores
+        const fileName = "Monthly_Delivery_Report_" + selectedYear + "_" + outletLocation.replace(/\s+/g, '_') + ".csv";
+
+        // Get table data
+        const table = document.getElementById('monthlyReportTable');
+        let csvContent = "data:text/csv;charset=utf-8,";
+
+        // Get headers
+        const headers = [];
+        const headerCells = table.querySelectorAll('thead th');
+        headerCells.forEach(cell => {
+            // Remove icons from header text - simplified regex for broader browser support
+            const text = cell.textContent.replace(/[^\x00-\x7F]/g, '').trim();
+            headers.push('"' + text + '"');
+        });
+        csvContent += headers.join(",") + "\r\n";
+
+        // Get rows
+        const rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            const rowData = [];
+            const cells = row.querySelectorAll('td');
+
+            cells.forEach(cell => {
+                // Clean up text content (remove special characters, trim whitespace)
+                let text = cell.textContent.replace(/[^\x00-\x7F]/g, '');
+                // For revenue columns, remove "LKR " prefix
+                text = text.replace('LKR ', '');
+                text = text.trim();
+                rowData.push('"' + text + '"');
+            });
+
+            csvContent += rowData.join(",") + "\r\n";
+        });
+
+        // Add summary data
+        const totalDeliveriesValue = <%= totalDeliveries %>;
+        const totalRevenueValue = "<%= String.format("%,.2f", totalRevenue).replace(",", "") %>";
+        const growthRateValue = "<%= String.format("%.1f", deliveryGrowthRate) %>";
+        const avgDeliveriesValue = "<%= String.format("%.0f", avgDeliveries) %>";
+        const avgRevenueValue = "<%= String.format("%,.2f", avgRevenue).replace(",", "") %>";
+
+        csvContent += '"Summary","","","","",""\r\n';
+        csvContent += '"Total Deliveries","' + totalDeliveriesValue + '","","","",""\r\n';
+        csvContent += '"Total Revenue","' + totalRevenueValue + '","","","",""\r\n';
+        csvContent += '"Average Growth Rate","' + growthRateValue + '%","","","",""\r\n';
+        csvContent += '"Monthly Average Deliveries","' + avgDeliveriesValue + '","","","",""\r\n';
+        csvContent += '"Monthly Average Revenue","' + avgRevenueValue + '","","","",""\r\n';
+
+        // Encode the CSV data to handle special characters
+        const encodedUri = encodeURI(csvContent);
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", fileName);
+        document.body.appendChild(link);
+
+        // Trigger download
+        link.click();
+
+        // Clean up
+        document.body.removeChild(link);
+    });
+</script>
 </body>
 </html>
