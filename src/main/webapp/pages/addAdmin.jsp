@@ -491,6 +491,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/trackingUpdate.css">+
 </head>
 <body>                
     <aside class="sidebar">
@@ -498,47 +499,42 @@
             <h3>Admin Panel</h3>
         </div>
         <nav>
-            <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/home.jsp">
-                    <i>📊</i> Dashboard
-                </a>
-            </div>
-            <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/tracking.jsp">
-                    <i>🔍</i> Tracking
-                </a>
-            </div>
-            <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/monthly_report.jsp">
-                    <i>📈</i> Sales Report
-                </a>
-            </div>
-            <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/addProduct.jsp">
-                    <i>➕</i> Add Product
-                </a>
-            </div>
-            <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/product-details.jsp">
-                    <i>📋</i> Product Details
-                </a>
-            </div>
-            <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/item-details.jsp">
-                    <i>📦</i> Inventory
-                </a>
-            </div>
-            <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/add-staff.jsp">
-                    <i>👥</i> Add Staff
-                </a>
-            </div>
-            <div class="sidebar-item active">
-                <a href="${pageContext.request.contextPath}/pages/staff-management.jsp">
-                    <i>👔</i> Staff Management
-                </a>
-            </div>
-        </nav>
+                    <div class="sidebar-item">
+                        <a href="${pageContext.request.contextPath}/pages/HeadOffice_Dashboard.jsp">
+                            <i>🏠</i> Dashboard
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="${pageContext.request.contextPath}/pages/chart.jsp">
+                            <i>📈</i> Analysis
+                        </a>
+                    </div>
+                    <div class="sidebar-item ">
+                        <a href="${pageContext.request.contextPath}/pages/HeadOffice_AddOutlet.jsp">
+                            <i>🏢</i> Add Outlet
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="${pageContext.request.contextPath}/pages/headOffice_product_summar.jsp">
+                            <i>📊</i> View Report
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="${pageContext.request.contextPath}/pages/HeadOffice_OutletDetails.jsp">
+                            <i>🏬</i> Outlet Details
+                        </a>
+                    </div>
+                    <div class="sidebar-item active">
+                        <a href="${pageContext.request.contextPath}/pages/addAdmin.jsp">
+                            <i>👥</i>Admin ADD
+                        </a>
+                    </div>
+                    <div class="sidebar-item">
+                        <a href="${pageContext.request.contextPath}/pages/HeadOffice_StaffDetails.jsp">
+                            <i>👥</i> Staff Details
+                        </a>
+                    </div>
+                </nav>
     </aside>
 
     <div class="main-content">

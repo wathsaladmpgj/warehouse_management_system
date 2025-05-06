@@ -333,6 +333,11 @@
                             <i>🏬</i> Outlet Details
                         </a>
                     </div>
+                    <div class="sidebar-item">
+                        <a href="${pageContext.request.contextPath}/pages/addAdmin.jsp">
+                            <i>👥</i>Admin ADD
+                        </a>
+                    </div>
                     <div class="sidebar-item active">
                         <a href="${pageContext.request.contextPath}/pages/HeadOffice_StaffDetails.jsp">
                             <i>👥</i> Staff Details
