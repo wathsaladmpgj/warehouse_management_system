@@ -318,7 +318,7 @@
                 <a href="${pageContext.request.contextPath}/pages/product-list.jsp">📋 Product Details</a>
             </div>
             <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/add-staff.jsp">👥 Add Staff</a>
+                <a href="${pageContext.request.contextPath}/pages/StaffFormOutlet.jsp">👥 Add Staff</a>
             </div>
         </div>
         <div class="main-content">

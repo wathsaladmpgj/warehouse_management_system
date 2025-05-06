@@ -344,7 +344,7 @@
                     </a>
                 </div>
                 <div class="sidebar-item">
-                    <a href="${pageContext.request.contextPath}/pages/add-staff.jsp">
+                    <a href="${pageContext.request.contextPath}/pages/StaffFormOutlet.jsp">
                         <i>👥</i> Add Staff
                     </a>
                 </div>
