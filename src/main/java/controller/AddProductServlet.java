@@ -1,3 +1,5 @@
+package controller;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -208,9 +210,9 @@ public class AddProductServlet extends HttpServlet {
 
             // 5b. Count returned items for this outlet
             String countReturnedItemsSql = "SELECT COUNT(*) AS returned_count FROM location_tracking " +
-                                         "WHERE tracking_update = 'Return_' + ?";
+                                         "WHERE tracking_update =?";
             countReturnedItemsStmt = conn.prepareStatement(countReturnedItemsSql);
-            countReturnedItemsStmt.setString(1, adminLocation);
+            countReturnedItemsStmt.setString(1, "Return" + adminLocation);
             countReturnedItemsRs = countReturnedItemsStmt.executeQuery();
             
             int returnedCount = 0;
