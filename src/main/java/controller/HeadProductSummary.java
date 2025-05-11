@@ -30,9 +30,15 @@ public class HeadProductSummary extends HttpServlet {
         // Get data for the selected year
         List<Map<String, Object>> summaryList = getSummaryData(year);
         
+        // Calculate yearly summary statistics
+        Map<String, Object> yearlyStats = calculateYearlyStats(summaryList);
+        
         // Set attributes for JSP
         request.setAttribute("year", year);
         request.setAttribute("summaryList", summaryList != null ? summaryList : new ArrayList<>());
+        request.setAttribute("totalItems", yearlyStats.get("totalItems"));
+        request.setAttribute("totalRevenue", yearlyStats.get("totalRevenue"));
+        request.setAttribute("avgMonthly", yearlyStats.get("avgMonthly"));
         
         // Forward to JSP
         request.getRequestDispatcher("/pages/headOffice_product_summar.jsp").forward(request, response);
@@ -74,6 +80,27 @@ public class HeadProductSummary extends HttpServlet {
         }
         
         return summaryList;
+    }
+
+    private Map<String, Object> calculateYearlyStats(List<Map<String, Object>> monthlyData) {
+        Map<String, Object> stats = new HashMap<>();
+        int totalItems = 0;
+        double totalRevenue = 0.0;
+        
+        // Calculate totals from monthly data
+        for (Map<String, Object> month : monthlyData) {
+            totalItems += (int) month.get("items");
+            totalRevenue += (double) month.get("total_price");
+        }
+        
+        // Calculate average monthly revenue
+        double avgMonthly = monthlyData.isEmpty() ? 0.0 : totalRevenue / monthlyData.size();
+        
+        stats.put("totalItems", totalItems);
+        stats.put("totalRevenue", totalRevenue);
+        stats.put("avgMonthly", avgMonthly);
+        
+        return stats;
     }
 
     @Override

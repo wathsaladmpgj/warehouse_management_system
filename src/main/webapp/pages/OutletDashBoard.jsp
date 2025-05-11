@@ -4,9 +4,34 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page session="true" %>
 <%
+    // Prevent caching
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setHeader("Expires", "0");
+    
+    // Force data refresh
     Admin admin = (Admin) session.getAttribute("admin");
     AdminService adminService = new AdminService();
+    
+    // Refresh all data
     double newItemsTotalPrice = adminService.getNewItemsTotalPrice(admin.getOutletLocation());
+    int trackingCount = adminService.getMatchingTrackingCount(admin.getOutletLocation());
+    int totalRegisteredItems = adminService.getTotalRegisteredItems(admin.getOutletLocation());
+    int availableItemsCount = adminService.getAvailableItemsCount(admin.getOutletLocation());
+    int successItemsCount = adminService.getSuccessItemsCount(admin.getOutletLocation());
+    double registeredItemsTotalPrice = adminService.getRegisteredItemsTotalPrice(admin.getOutletLocation());
+    double availableItemsTotalPrice = adminService.getAvailableItemsTotalPrice(admin.getOutletLocation());
+    double successItemsTotalPrice = adminService.getSuccessItemsTotalPrice(admin.getOutletLocation());
+    
+    // Store fresh data in session
+    session.setAttribute("trackingCount", trackingCount);
+    session.setAttribute("totalRegisteredItems", totalRegisteredItems);
+    session.setAttribute("availableItemsCount", availableItemsCount);
+    session.setAttribute("successItemsCount", successItemsCount);
+    session.setAttribute("newItemsTotalPrice", newItemsTotalPrice);
+    session.setAttribute("registeredItemsTotalPrice", registeredItemsTotalPrice);
+    session.setAttribute("availableItemsTotalPrice", availableItemsTotalPrice);
+    session.setAttribute("successItemsTotalPrice", successItemsTotalPrice);
 %>
 <!DOCTYPE html>
 <html>
