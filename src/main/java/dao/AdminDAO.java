@@ -64,13 +64,12 @@ public class AdminDAO {
 
     // NEW METHOD FOR SUCCESS ITEMS COUNT
     public int getSuccessItemsCount(String outletName) throws SQLException {
-        String sql = "SELECT SUM(total_registered_items - (remaining_returned_items + available_new_items)) AS success_count " +
-                    "FROM outlet_details WHERE outlet_name = ?";
+        String sql = "SELECT COUNT(*) AS count FROM location_tracking WHERE tracking_update = ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, outletName);
+            stmt.setString(1, "Sucess");
             ResultSet rs = stmt.executeQuery();
-            return rs.next() ? rs.getInt("success_count") : 0;
+            return rs.next() ? rs.getInt("count") : 0;
         }
     }
     
@@ -116,14 +115,14 @@ public double getRegisteredItemsTotalPrice(String outletLocation) throws SQLExce
 public double getAvailableItemsTotalPrice(String outletLocation) throws SQLException {
     String sql = "SELECT SUM(pp.item_price) AS total " +
                  "FROM product_pricing pp " +
-                 "JOIN outlet_details od ON pp.admin_location = od.outlet_name " +
-                 "WHERE od.outlet_name LIKE ? " +
-                 "AND (od.remaining_returned_items > 0 OR od.available_new_items > 0)";
+                 "JOIN location_tracking lt ON pp.product_key = lt.product_key " +
+                 "WHERE lt.tracking_update IN (?, ?)";
     
     try (Connection conn = DBHelper.getConnection();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
          
-        stmt.setString(1, "%" + outletLocation + "%");
+        stmt.setString(1, "Return"+outletLocation);
+        stmt.setString(2, outletLocation);  // e.g., "Adminlocation"
         ResultSet rs = stmt.executeQuery();
         
         return rs.next() ? rs.getDouble("total") : 0.0;
@@ -133,14 +132,13 @@ public double getAvailableItemsTotalPrice(String outletLocation) throws SQLExcep
 public double getSuccessItemsTotalPrice(String outletLocation) throws SQLException {
     String sql = "SELECT SUM(pp.item_price) AS total " +
                  "FROM product_pricing pp " +
-                 "JOIN outlet_details od ON pp.admin_location = od.outlet_name " +
-                 "WHERE od.outlet_name = ? " +
-                 "AND od.total_registered_items > (od.remaining_returned_items + od.available_new_items)";
+                 "JOIN location_tracking lt ON pp.product_key = lt.product_key " +
+                 "WHERE lt.tracking_update = ?";
     
     try (Connection conn = DBHelper.getConnection();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
          
-        stmt.setString(1, outletLocation);
+        stmt.setString(1, "Sucess");
         ResultSet rs = stmt.executeQuery();
         
         return rs.next() ? rs.getDouble("total") : 0.0;
