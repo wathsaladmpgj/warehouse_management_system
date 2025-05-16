@@ -294,36 +294,31 @@
             }
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/trackingUpdate.css">
 </head>
 <body>
     <div class="dashboard-container">
         <div class="sidebar">
             <div class="sidebar-header">
-                <h3>Warehouse Management</h3>
+                <h3>Admin Panel</h3>
             </div>
             <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/home.jsp">📊 Dashboard</a>
+                <a href="${pageContext.request.contextPath}/pages/OutletDashBoard.jsp">📊 Dashboard</a>
             </div>
             <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/tracking.jsp">🔍 Tracking</a>
+                <a href="${pageContext.request.contextPath}/pages/updateTracking.jsp">🔍 Tracking</a>
             </div>
             <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/monthly_report.jsp">📈 Sales Report</a>
+                <a href="${pageContext.request.contextPath}/pages/monthlyDeliveryReport.jsp">📈 Sales Report</a>
             </div>
             <div class="sidebar-item active">
                 <a href="${pageContext.request.contextPath}/pages/addProduct.jsp">➕ Add Product</a>
             </div>
             <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/product-details.jsp">📋 Product Details</a>
+                <a href="${pageContext.request.contextPath}/pages/product-list.jsp">📋 Product Details</a>
             </div>
             <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/item-details.jsp">📦 Inventory</a>
-            </div>
-            <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/add-staff.jsp">👥 Add Staff</a>
-            </div>
-            <div class="sidebar-item">
-                <a href="${pageContext.request.contextPath}/pages/staff-management.jsp">👔 Staff Management</a>
+                <a href="${pageContext.request.contextPath}/pages/StaffFormOutlet.jsp">👥 Add Staff</a>
             </div>
         </div>
         <div class="main-content">

@@ -41,6 +41,7 @@ public class LoginServlet extends HttpServlet {
                     return;
                 }
 
+
                 int trackingCount = adminService.getMatchingTrackingCount(adminLocation);
                 session.setAttribute("trackingCount", trackingCount);
 
