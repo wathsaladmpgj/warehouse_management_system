@@ -89,11 +89,6 @@ The Warehouse Management System (WMS) is a robust, enterprise-grade web applicat
      ```
    - Deploy the generated WAR file to your Tomcat server’s `webapps` directory.
 
-4. **Access the Application:**
-   - Open your browser and navigate to:  
-     `http://localhost:8080/warehouse_management_system`
-
----
 
 ## Usage
 
@@ -103,26 +98,10 @@ The Warehouse Management System (WMS) is a robust, enterprise-grade web applicat
 
 ---
 
-## Contributing
-
-Contributions are welcome! Please fork the repository and create a pull request for any enhancements or bug fixes.
-
----
-
-## License
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
-
----
-
 ## Acknowledgements
 
 - Java EE and MySQL communities for tools and libraries
 - All contributors and testers
 
----
 
-## Contact
-
-For support or inquiries, please contact [project maintainer](mailto:your-email@example.com).
 
