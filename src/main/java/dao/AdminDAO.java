@@ -67,7 +67,7 @@ public class AdminDAO {
         String sql = "SELECT COUNT(*) AS count FROM location_tracking WHERE tracking_update = ?";
         try (Connection conn = DBHelper.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, "Sucess");
+            stmt.setString(1, "Success");
             ResultSet rs = stmt.executeQuery();
             return rs.next() ? rs.getInt("count") : 0;
         }
@@ -138,7 +138,7 @@ public double getSuccessItemsTotalPrice(String outletLocation) throws SQLExcepti
     try (Connection conn = DBHelper.getConnection();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
          
-        stmt.setString(1, "Sucess");
+        stmt.setString(1, "Success");
         ResultSet rs = stmt.executeQuery();
         
         return rs.next() ? rs.getDouble("total") : 0.0;
